@@ -1,647 +1,1285 @@
 <!DOCTYPE html>
 <html lang="fr">
+
 <head>
-<meta charset="UTF-8"/>
-<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0"/>
-<title>Kleat.ma – Livraison de repas</title>
-<meta name="description" content="Kleat.ma – Commandez vos plats préférés, livrés rapidement chez vous au Maroc."/>
-<link rel="preconnect" href="https://fonts.googleapis.com"/>
-<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800;900&family=Playfair+Display:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet"/>
-<style>
-*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
-:root{
-  --green:#1A4C2E;
-  --green-dark:#143B24;
-  --green-light:#2A7A4A;
-  --black:#0A0A0A;
-  --black2:#141414;
-  --black3:#1E1E1E;
-  --gray:#2C2C2C;
-  --gray2:#3A3A3A;
-  --text:#F0F0F0;
-  --text2:#A0A0A0;
-  --radius:18px;
-  --radius-sm:12px;
-}
-html{scroll-behavior:smooth;}
-body{
-  font-family:'Outfit',sans-serif;
-  background:var(--black);
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0" />
+  <title>Kleat.ma – Livraison de repas</title>
+  <meta name="description" content="Kleat.ma – Commandez vos plats préférés, livrés rapidement chez vous au Maroc." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800;900&family=Pacifico&family=Playfair+Display:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet"/>
+  <style>
+    *,
+    *::before,
+    *::after {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    :root {
+      --green: #1A4C2E;
+      --green-dark: #143B24;
+      --green-light: #2A7A4A;
+      --black: #0A0A0A;
+      --black2: #141414;
+      --black3: #1E1E1E;
+      --gray: #2C2C2C;
+      --gray2: #3A3A3A;
+      --text: #F0F0F0;
+      --text2: #A0A0A0;
+      --radius: 18px;
+      --radius-sm: 12px;
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
+    body {
+      font-family: 'Outfit', sans-serif;
+      background: var(--black);
+      color: var(--text);
+      min-height: 100vh;
+      max-width: 430px;
+      margin: 0 auto;
+      position: relative;
+      overflow-x: hidden;
+    }
+
+    /* ── ONBOARDING ── */
+    #onboarding {
+      position: fixed;
+      inset: 0;
+      z-index: 998;
+      background: var(--black);
+      display: none;
+      flex-direction: column;
+      padding: 40px 24px;
+      justify-content: center;
+    }
+
+    #onboarding.active {
+      display: flex;
+    }
+
+    .ob-title {
+      font-size: 32px;
+      font-weight: 900;
+      margin-bottom: 8px;
+      color: var(--green);
+    }
+
+    .ob-sub {
+      color: var(--text2);
+      font-size: 16px;
+      margin-bottom: 32px;
+    }
+
+    .ob-input-group {
+      margin-bottom: 20px;
+    }
+
+    .ob-label {
+      display: block;
+      font-size: 13px;
+      font-weight: 600;
+      color: var(--text2);
+      margin-bottom: 8px;
+      text-transform: uppercase;
+    }
+
+    .ob-input {
+      width: 100%;
+      background: var(--black3);
+      border: 1px solid var(--gray2);
+      padding: 16px;
+      border-radius: 14px;
+      color: var(--text);
+      font-family: inherit;
+      outline: none;
+      transition: border-color .2s;
+    }
+
+    .ob-input:focus {
+      border-color: var(--green);
+    }
+
+    .ob-btn {
+      width: 100%;
+      background: var(--green);
+      color: var(--text);
+      border: none;
+      padding: 18px;
+      border-radius: 14px;
+      font-weight: 800;
+      font-size: 16px;
+      cursor: pointer;
+      margin-top: 20px;
+    }
+
+    /* ── SPLASH ── */
+    #splash {
+      position: fixed;
+      inset: 0;
+      z-index: 999;
+      background: var(--black);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 16px;
+      transition: opacity .5s ease;
+    }
+
+    #splash .logo-big {
+      font-size: 52px;
+      font-weight: 900;
+      letter-spacing: -2px;
+    }
+
+    #splash .logo-big span {
+      color: var(--green);
+    }
+
+    #splash .tagline{
   color:var(--text);
-  min-height:100vh;
-  max-width:430px;
-  margin:0 auto;
-  position:relative;
-  overflow-x:hidden;
-}
-/* ── ONBOARDING ── */
-#onboarding{
-  position:fixed;inset:0;z-index:998;
-  background:var(--black);
-  display:none;flex-direction:column;
-  padding:40px 24px;
-  justify-content:center;
-}
-#onboarding.active{display:flex;}
-.ob-title{font-size:32px;font-weight:900;margin-bottom:8px;color:var(--green);}
-.ob-sub{color:var(--text2);font-size:16px;margin-bottom:32px;}
-.ob-input-group{margin-bottom:20px;}
-.ob-label{display:block;font-size:13px;font-weight:600;color:var(--text2);margin-bottom:8px;text-transform:uppercase;}
-.ob-input{
-  width:100%;background:var(--black3);border:1px solid var(--gray2);
-  padding:16px;border-radius:14px;color:var(--text);font-family:inherit;
-  outline:none;transition:border-color .2s;
-}
-.ob-input:focus{border-color:var(--green);}
-.ob-btn{
-  width:100%;background:var(--green);color:var(--text);border:none;
-  padding:18px;border-radius:14px;font-weight:800;font-size:16px;
-  cursor:pointer;margin-top:20px;
+  font-family: 'Pacifico', cursive;
+  font-size: 20px;
+  margin-top: 10px;
+  text-shadow: 0 2px 4px rgba(0,0,0,0.3);
 }
 
-/* ── SPLASH ── */
-#splash{
-  position:fixed;inset:0;z-index:999;
-  background:var(--black);
-  display:flex;flex-direction:column;
-  align-items:center;justify-content:center;
-  gap:16px;
-  transition:opacity .5s ease;
-}
-#splash .logo-big{font-size:52px;font-weight:900;letter-spacing:-2px;}
-#splash .logo-big span{color:var(--green);}
-#splash .tagline{
-  color:var(--text2);
-  font-family: 'Playfair Display', serif;
-  font-style: italic;
-  font-size: 18px;
-  letter-spacing: 0.5px;
-  margin-top: 5px;
-  opacity: 0.8;
-}
-/* ── CIRCULAR LOADER ── */
-#splash .loader-circle {
-  width: 50px; height: 50px;
-  border: 3px solid rgba(26, 76, 46, 0.1);
-  border-top: 3px solid var(--green);
-  border-radius: 50%;
-  margin-top: 30px;
-  animation: spin 1s linear infinite;
-}
-@keyframes spin { 100% { transform: rotate(360deg); } }
+    /* ── CIRCULAR LOADER ── */
+    #splash .loader-circle {
+      width: 50px;
+      height: 50px;
+      border: 3px solid rgba(26, 76, 46, 0.1);
+      border-top: 3px solid var(--green);
+      border-radius: 50%;
+      margin-top: 30px;
+      animation: spin 1s linear infinite;
+    }
 
-/* ── APP WRAPPER ── */
-#app{opacity:0;transition:opacity .5s ease;}
-#app.visible{opacity:1;}
+    @keyframes spin {
+      100% {
+        transform: rotate(360deg);
+      }
+    }
 
-/* ── TOP NAV ── */
-.top-nav{
-  position:sticky;top:0;z-index:100;
-  background:rgba(10,10,10,.92);
-  backdrop-filter:blur(16px);
-  padding:14px 20px;
-  display:flex;align-items:center;justify-content:space-between;
-  border-bottom:1px solid rgba(26,76,46,.15);
-}
-.nav-logo{font-size:22px;font-weight:900;letter-spacing:-1px;}
-.nav-logo span{color:var(--green);}
-.nav-icons{display:flex;align-items:center;gap:14px;}
-.icon-btn{
-  background:var(--black3);border:none;
-  width:40px;height:40px;border-radius:50%;
-  display:flex;align-items:center;justify-content:center;
-  cursor:pointer;position:relative;transition:background .2s;
-}
-.icon-btn:hover{background:var(--gray);}
-.icon-btn svg{width:20px;height:20px;stroke:var(--text);fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round;}
-.cart-badge{
-  position:absolute;top:-4px;right:-4px;
-  background:var(--green);color:var(--text);
-  font-size:10px;font-weight:800;
-  width:18px;height:18px;border-radius:50%;
-  display:flex;align-items:center;justify-content:center;
-}
+    /* ── APP WRAPPER ── */
+    #app {
+      opacity: 0;
+      transition: opacity .5s ease;
+    }
 
-/* ── HERO ── */
-.hero{
+    #app.visible {
+      opacity: 1;
+    }
+
+    /* ── TOP NAV ── */
+    .top-nav {
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      background: rgba(10, 10, 10, .92);
+      backdrop-filter: blur(16px);
+      padding: 14px 20px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      border-bottom: 1px solid rgba(26, 76, 46, .15);
+    }
+
+    .nav-logo {
+      font-size: 22px;
+      font-weight: 900;
+      letter-spacing: -1px;
+    }
+
+    .nav-logo span {
+      color: var(--green);
+    }
+
+    .nav-icons {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+    }
+
+    .icon-btn {
+      background: var(--black3);
+      border: none;
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      position: relative;
+      transition: background .2s;
+    }
+
+    .icon-btn:hover {
+      background: var(--gray);
+    }
+
+    .icon-btn svg {
+      width: 20px;
+      height: 20px;
+      stroke: var(--text);
+      fill: none;
+      stroke-width: 2;
+      stroke-linecap: round;
+      stroke-linejoin: round;
+    }
+
+    .cart-badge {
+      position: absolute;
+      top: -4px;
+      right: -4px;
+      background: var(--green);
+      color: var(--text);
+      font-size: 10px;
+      font-weight: 800;
+      width: 18px;
+      height: 18px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    /* ── HERO ── */
+    .hero{
   margin:16px 16px 0;
   border-radius:24px;overflow:hidden;
-  position:relative;height:220px;
-  background:var(--black2);
-  border: 1px solid rgba(26,76,46,0.1);
+  position:relative;height:240px;
+  background: url('hero-bg.jpg') center/cover no-repeat;
+  display: flex; align-items: flex-end;
 }
-.hero-content{
-  position:relative;z-index:2;padding:28px 24px;height:100%;
-  display:flex;flex-direction:column;justify-content:space-between;
-}
-.hero-tag{
-  display:inline-flex;align-items:center;gap:6px;
-  background:rgba(26,76,46,.15);border:1px solid rgba(26,76,46,.3);
-  padding:5px 12px;border-radius:100px;
-  font-size:11px;font-weight:600;color:var(--green);letter-spacing:.5px;
-  width:fit-content;
-}
-.hero-title{font-size:28px;font-weight:800;line-height:1.2;margin-top:10px;}
-.hero-title em{color:var(--green);font-style:normal;}
-.hero-sub{color:var(--text2);font-size:13px;margin-top:6px;}
-.hero-cta{
-  display:inline-flex;align-items:center;gap:8px;
-  background:var(--green);color:var(--text);
-  padding:11px 20px;border-radius:100px;
-  font-size:13px;font-weight:700;cursor:pointer;border:none;
-  transition:transform .2s,box-shadow .2s;
-  width:fit-content;
-}
-.hero-cta:hover{transform:scale(1.04);box-shadow:0 8px 24px rgba(26,76,46,.4);}
-
-/* ── SEARCH ── */
-.search-wrap{padding:16px 16px 0;}
-.search-bar{
-  display:flex;align-items:center;gap:10px;
-  background:var(--black3);border:1px solid var(--gray2);
-  border-radius:var(--radius);padding:13px 16px;
-  transition:border-color .2s;
-}
-.search-bar:focus-within{border-color:var(--green);}
-.search-bar svg{width:18px;height:18px;stroke:var(--text2);fill:none;stroke-width:2;flex-shrink:0;}
-.search-bar input{
-  flex:1;background:none;border:none;outline:none;
-  color:var(--text);font-family:'Outfit',sans-serif;font-size:14px;
-}
-.search-bar input::placeholder{color:var(--text2);}
-.filter-btn{
-  flex-shrink:0;background:var(--green);border:none;
-  width:38px;height:38px;border-radius:10px;
-  display:flex;align-items:center;justify-content:center;cursor:pointer;
-}
-.filter-btn svg{width:18px;height:18px;stroke:var(--text);fill:none;stroke-width:2.5;}
-
-/* ── SECTION TITLE ── */
-.section-header{
-  display:flex;align-items:center;justify-content:space-between;
-  padding:24px 16px 12px;
-}
-.section-title{font-size:18px;font-weight:700;}
-.see-all{color:var(--green);font-size:13px;font-weight:600;cursor:pointer;background:none;border:none;}
-
-/* ── CATEGORIES ── */
-.cats-scroll{
-  display:flex;gap:10px;overflow-x:auto;padding:0 16px 4px;
-  scrollbar-width:none;
-}
-.cats-scroll::-webkit-scrollbar{display:none;}
-.cat-chip{
-  flex-shrink:0;padding:9px 18px;border-radius:100px;
-  font-size:13px;font-weight:600;cursor:pointer;
-  border:1.5px solid var(--gray2);background:var(--black3);color:var(--text2);
-  transition:all .2s;white-space:nowrap;
-}
-.cat-chip.active,.cat-chip:hover{
-  background:var(--green);color:var(--text);border-color:var(--green);
+.hero::after {
+  content: '';
+  position: absolute; inset: 0;
+  background: linear-gradient(to top, rgba(0,0,0,0.8) 0%, transparent 60%);
 }
 
-/* ── FEATURED SCROLL ── */
-.cards-scroll{
-  display:flex;gap:14px;overflow-x:auto;padding:0 16px 4px;
-  scrollbar-width:none;
-}
-.cards-scroll::-webkit-scrollbar{display:none;}
-.food-card-h{
-  flex-shrink:0;width:200px;
-  background:var(--black3);border-radius:var(--radius);
-  overflow:hidden;cursor:pointer;
-  border:1px solid rgba(255,255,255,.05);
-  transition:transform .25s,box-shadow .25s;
-}
-.food-card-h:hover{transform:translateY(-4px);box-shadow:0 12px 32px rgba(0,0,0,.5);}
-.food-card-h img{width:100%;height:120px;object-fit:cover;}
-.food-card-h .card-body{padding:12px;}
-.food-card-h .card-cat{font-size:10px;font-weight:700;color:var(--green);letter-spacing:.8px;text-transform:uppercase;}
-.food-card-h .card-name{font-size:14px;font-weight:700;margin:4px 0 2px;line-height:1.3;}
-.food-card-h .card-price{font-size:15px;font-weight:800;color:var(--green);}
-.food-card-h .card-add{
-  margin-top:8px;width:100%;padding:8px;border-radius:10px;
-  background:var(--green);color:var(--text);border:none;
-  font-family:'Outfit',sans-serif;font-size:12px;font-weight:700;
-  cursor:pointer;transition:opacity .2s;
-}
-.food-card-h .card-add:hover{opacity:.85;}
+    .hero-glow {
+      position: absolute;
+      inset: 0;
+      background: radial-gradient(ellipse at 60% 40%, rgba(26, 76, 46, .3) 0%, transparent 65%);
+    }
 
-/* ── MENU GRID ── */
-.menu-grid{
-  display:grid;grid-template-columns:1fr 1fr;
-  gap:14px;padding:0 16px;
-}
-.food-card-v{
-  background:var(--black3);border-radius:var(--radius);overflow:hidden;
-  border:1px solid rgba(255,255,255,.05);cursor:pointer;
-  transition:transform .25s,box-shadow .25s;
-}
-.food-card-v:hover{transform:translateY(-3px);box-shadow:0 10px 28px rgba(0,0,0,.5);}
-.food-card-v .thumb{position:relative;}
-.food-card-v img{width:100%;height:120px;object-fit:cover;}
-.food-card-v .price-badge{
-  position:absolute;bottom:8px;right:8px;
-  background:var(--black);border:1px solid var(--green);
-  color:var(--green);font-size:11px;font-weight:800;
-  padding:3px 9px;border-radius:100px;
-}
-.food-card-v .card-body{padding:10px;}
-.food-card-v .card-cat{font-size:9px;font-weight:700;color:var(--green);letter-spacing:.8px;text-transform:uppercase;}
-.food-card-v .card-name{font-size:13px;font-weight:700;margin:3px 0 4px;line-height:1.3;}
-.food-card-v .card-meta{display:flex;align-items:center;justify-content:space-between;}
-.food-card-v .rating{display:flex;align-items:center;gap:3px;font-size:11px;color:var(--text2);}
-.food-card-v .rating svg{width:11px;height:11px;fill:var(--green);stroke:none;}
-.food-card-v .card-add-sm{
-  background:var(--green);color:var(--text);border:none;
-  width:26px;height:26px;border-radius:8px;
-  font-size:18px;font-weight:900;cursor:pointer;
-  display:flex;align-items:center;justify-content:center;
-  transition:transform .2s;
-}
-.food-card-v .card-add-sm:hover{transform:scale(1.1);}
+    .hero-content {
+      position: relative;
+      z-index: 2;
+      padding: 28px 24px;
+      height: 100%;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+    }
 
-/* ── PROMO BANNER ── */
-.promo-banner{
-  margin:24px 16px;border-radius:20px;
-  background:linear-gradient(135deg,#1A4C2E,#0A0A0A);
-  border:1px solid rgba(26,76,46,.2);
-  padding:20px;display:flex;align-items:center;gap:14px;
-  position:relative;overflow:hidden;
-}
-.promo-banner::before{
-  content:'';position:absolute;right:-30px;top:-30px;
-  width:120px;height:120px;background:radial-gradient(circle,rgba(26,76,46,.2),transparent 70%);
-}
-.promo-emoji{font-size:42px;}
-.promo-text .promo-tag{
-  font-size:10px;font-weight:700;color:var(--green);letter-spacing:1px;text-transform:uppercase;
-}
-.promo-text h3{font-size:16px;font-weight:800;margin:4px 0 2px;}
-.promo-text p{font-size:12px;color:var(--text2);}
-.promo-badge{
-  margin-left:auto;flex-shrink:0;
-  background:var(--green);color:var(--text);
-  font-size:11px;font-weight:900;padding:8px 12px;border-radius:12px;text-align:center;
-  line-height:1.2;
-}
+    .hero-tag {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      background: rgba(26, 76, 46, .15);
+      border: 1px solid rgba(26, 76, 46, .3);
+      padding: 5px 12px;
+      border-radius: 100px;
+      font-size: 11px;
+      font-weight: 600;
+      color: var(--green);
+      letter-spacing: .5px;
+      width: fit-content;
+    }
 
-/* ── BOTTOM NAV ── */
-.bottom-nav{
-  position:fixed;bottom:0;left:50%;transform:translateX(-50%);
-  width:100%;max-width:430px;
-  background:rgba(10,10,10,.95);backdrop-filter:blur(20px);
-  border-top:1px solid rgba(26,76,46,.12);
-  display:flex;justify-content:space-around;align-items:center;
-  padding:12px 0 env(safe-area-inset-bottom);z-index:100;
-}
-.nav-item{
-  display:flex;flex-direction:column;align-items:center;gap:4px;
-  cursor:pointer;padding:4px 16px;border:none;background:none;
-  color:var(--text2);transition:color .2s;
-}
-.nav-item.active{color:var(--green);}
-.nav-item svg{width:22px;height:22px;fill:none;stroke:currentColor;stroke-width:2;stroke-linecap:round;stroke-linejoin:round;}
-.nav-item span{font-size:10px;font-weight:600;font-family:'Outfit',sans-serif;}
-.nav-item.active .nav-center-dot{
-  width:4px;height:4px;border-radius:50%;background:var(--green);margin-top:2px;
-}
+    .hero-title {
+      font-size: 28px;
+      font-weight: 800;
+      line-height: 1.2;
+      margin-top: 10px;
+    }
 
-/* ── CART MODAL ── */
-.cart-overlay{
-  position:fixed;inset:0;z-index:200;
-  background:rgba(0,0,0,.7);backdrop-filter:blur(4px);
-  display:none;align-items:flex-end;
-}
-.cart-overlay.open{display:flex;}
-.cart-sheet{
-  width:100%;max-width:430px;margin:0 auto;
-  background:var(--black2);border-radius:28px 28px 0 0;
-  padding:20px 20px calc(24px + env(safe-area-inset-bottom));
-  max-height:80vh;overflow-y:auto;
-  animation:slideUp .35s ease;
-}
-@keyframes slideUp{from{transform:translateY(100%);}to{transform:translateY(0);}}
-.cart-handle{width:40px;height:4px;border-radius:2px;background:var(--gray2);margin:0 auto 20px;}
-.cart-sheet h2{font-size:20px;font-weight:800;margin-bottom:16px;}
-.cart-empty{text-align:center;padding:40px 0;color:var(--text2);}
-.cart-empty .cart-empty-icon{font-size:52px;margin-bottom:12px;}
-.cart-item{
-  display:flex;align-items:center;gap:12px;
-  padding:14px 0;border-bottom:1px solid var(--gray);
-}
-.cart-item img{width:60px;height:60px;border-radius:12px;object-fit:cover;flex-shrink:0;}
-.cart-item-info{flex:1;}
-.cart-item-name{font-size:14px;font-weight:700;}
-.cart-item-price{font-size:14px;font-weight:800;color:var(--green);margin-top:2px;}
-.qty-ctrl{display:flex;align-items:center;gap:10px;}
-.qty-btn{
-  width:28px;height:28px;border-radius:8px;border:1.5px solid var(--gray2);
-  background:none;color:var(--text);font-size:16px;cursor:pointer;
-  display:flex;align-items:center;justify-content:center;
-}
-.qty-num{font-size:14px;font-weight:700;min-width:16px;text-align:center;}
-.cart-total{
-  display:flex;justify-content:space-between;align-items:center;
-  padding:16px 0 0;margin-top:8px;
-}
-.cart-total-label{font-size:15px;color:var(--text2);}
-.cart-total-price{font-size:22px;font-weight:900;color:var(--green);}
-.checkout-btn{
-  width:100%;margin-top:16px;padding:16px;border-radius:var(--radius);
-  background:var(--green);color:var(--text);border:none;
-  font-family:'Outfit',sans-serif;font-size:16px;font-weight:800;
-  cursor:pointer;transition:transform .2s,box-shadow .2s;
-}
-.checkout-btn:hover{transform:scale(1.02);box-shadow:0 8px 24px rgba(26,76,46,.4);}
+    .hero-title em {
+      color: var(--green);
+      font-style: normal;
+    }
 
-/* ── BOTTOM SPACER ── */
-.spacer{height:90px;}
+    .hero-sub {
+      color: var(--text2);
+      font-size: 13px;
+      margin-top: 6px;
+    }
 
-/* ── TOAST ── */
-.toast{
-  position:fixed;bottom:90px;left:50%;transform:translateX(-50%) translateY(20px);
-  background:var(--black3);border:1px solid rgba(26,76,46,.3);
-  color:var(--text);padding:12px 20px;border-radius:100px;
-  font-size:13px;font-weight:600;white-space:nowrap;
-  opacity:0;transition:all .3s;z-index:400;pointer-events:none;
-}
-.toast.show{opacity:1;transform:translateX(-50%) translateY(0);}
+    .hero-cta {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      background: var(--green);
+      color: var(--text);
+      padding: 11px 20px;
+      border-radius: 100px;
+      font-size: 13px;
+      font-weight: 700;
+      cursor: pointer;
+      border: none;
+      transition: transform .2s, box-shadow .2s;
+      width: fit-content;
+    }
 
-/* ── SIDES MODAL ── */
-.sides-modal{
-  position:fixed;inset:0;z-index:350;
-  background:rgba(0,0,0,.8);backdrop-filter:blur(10px);
-  display:none;align-items:center;justify-content:center;
-  padding:20px;
-}
-.sides-modal.open{display:flex;}
-.sides-content{
-  background:var(--black2);border:1px solid var(--green);
-  border-radius:24px;padding:24px;width:100%;max-width:360px;
-}
-.side-option{
-  display:flex;align-items:center;justify-content:space-between;
-  padding:12px;border-radius:12px;background:var(--black3);
-  margin-bottom:8px;cursor:pointer;border:1px solid transparent;
-}
-.side-option.selected{border-color:var(--green);background:rgba(26,76,46,.1);}
-.side-option span{font-size:14px;font-weight:600;}
-</style>
+    .hero-cta:hover {
+      transform: scale(1.04);
+      box-shadow: 0 8px 24px rgba(26, 76, 46, .4);
+    }
+
+    /* ── SEARCH ── */
+    .search-wrap {
+      padding: 16px 16px 0;
+    }
+
+    .search-bar {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      background: var(--black3);
+      border: 1px solid var(--gray2);
+      border-radius: var(--radius);
+      padding: 13px 16px;
+      transition: border-color .2s;
+    }
+
+    .search-bar:focus-within {
+      border-color: var(--green);
+    }
+
+    .search-bar svg {
+      width: 18px;
+      height: 18px;
+      stroke: var(--text2);
+      fill: none;
+      stroke-width: 2;
+      flex-shrink: 0;
+    }
+
+    .search-bar input {
+      flex: 1;
+      background: none;
+      border: none;
+      outline: none;
+      color: var(--text);
+      font-family: 'Outfit', sans-serif;
+      font-size: 14px;
+    }
+
+    .search-bar input::placeholder {
+      color: var(--text2);
+    }
+
+    .filter-btn {
+      flex-shrink: 0;
+      background: var(--green);
+      border: none;
+      width: 38px;
+      height: 38px;
+      border-radius: 10px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+    }
+
+    .filter-btn svg {
+      width: 18px;
+      height: 18px;
+      stroke: var(--text);
+      fill: none;
+      stroke-width: 2.5;
+    }
+
+    /* ── SECTION TITLE ── */
+    .section-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 24px 16px 12px;
+    }
+
+    .section-title {
+      font-size: 18px;
+      font-weight: 700;
+    }
+
+    .see-all {
+      color: var(--green);
+      font-size: 13px;
+      font-weight: 600;
+      cursor: pointer;
+      background: none;
+      border: none;
+    }
+
+    /* ── CATEGORIES ── */
+    .cats-scroll {
+      display: flex;
+      gap: 10px;
+      overflow-x: auto;
+      padding: 0 16px 4px;
+      scrollbar-width: none;
+    }
+
+    .cats-scroll::-webkit-scrollbar {
+      display: none;
+    }
+
+    .cat-chip {
+      flex-shrink: 0;
+      padding: 9px 18px;
+      border-radius: 100px;
+      font-size: 13px;
+      font-weight: 600;
+      cursor: pointer;
+      border: 1.5px solid var(--gray2);
+      background: var(--black3);
+      color: var(--text2);
+      transition: all .2s;
+      white-space: nowrap;
+    }
+
+    .cat-chip.active,
+    .cat-chip:hover {
+      background: var(--green);
+      color: var(--text);
+      border-color: var(--green);
+    }
+
+    /* ── FEATURED SCROLL ── */
+    .cards-scroll {
+      display: flex;
+      gap: 14px;
+      overflow-x: auto;
+      padding: 0 16px 4px;
+      scrollbar-width: none;
+    }
+
+    .cards-scroll::-webkit-scrollbar {
+      display: none;
+    }
+
+    .food-card-h {
+      flex-shrink: 0;
+      width: 200px;
+      background: var(--black3);
+      border-radius: var(--radius);
+      overflow: hidden;
+      cursor: pointer;
+      border: 1px solid rgba(255, 255, 255, .05);
+      transition: transform .25s, box-shadow .25s;
+    }
+
+    .food-card-h:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 12px 32px rgba(0, 0, 0, .5);
+    }
+
+    .food-card-h img {
+      width: 100%;
+      height: 120px;
+      object-fit: cover;
+    }
+
+    .food-card-h .card-body {
+      padding: 12px;
+    }
+
+    .food-card-h .card-cat {
+      font-size: 10px;
+      font-weight: 700;
+      color: var(--green);
+      letter-spacing: .8px;
+      text-transform: uppercase;
+    }
+
+    .food-card-h .card-name {
+      font-size: 14px;
+      font-weight: 700;
+      margin: 4px 0 2px;
+      line-height: 1.3;
+    }
+
+    .food-card-h .card-price {
+      font-size: 15px;
+      font-weight: 800;
+      color: var(--green);
+    }
+
+    .food-card-h .card-add {
+      margin-top: 8px;
+      width: 100%;
+      padding: 8px;
+      border-radius: 10px;
+      background: var(--green);
+      color: var(--text);
+      border: none;
+      font-family: 'Outfit', sans-serif;
+      font-size: 12px;
+      font-weight: 700;
+      cursor: pointer;
+      transition: opacity .2s;
+    }
+
+    .food-card-h .card-add:hover {
+      opacity: .85;
+    }
+
+    /* ── MENU GRID ── */
+    .menu-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 14px;
+      padding: 0 16px;
+    }
+
+    .food-card-v {
+      background: var(--black3);
+      border-radius: var(--radius);
+      overflow: hidden;
+      border: 1px solid rgba(255, 255, 255, .05);
+      cursor: pointer;
+      transition: transform .25s, box-shadow .25s;
+    }
+
+    .food-card-v:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 10px 28px rgba(0, 0, 0, .5);
+    }
+
+    .food-card-v .thumb {
+      position: relative;
+    }
+
+    .food-card-v img {
+      width: 100%;
+      height: 120px;
+      object-fit: cover;
+    }
+
+    .food-card-v .price-badge {
+      position: absolute;
+      bottom: 8px;
+      right: 8px;
+      background: var(--black);
+      border: 1px solid var(--green);
+      color: var(--green);
+      font-size: 11px;
+      font-weight: 800;
+      padding: 3px 9px;
+      border-radius: 100px;
+    }
+
+    .food-card-v .card-body {
+      padding: 10px;
+    }
+
+    .food-card-v .card-cat {
+      font-size: 9px;
+      font-weight: 700;
+      color: var(--green);
+      letter-spacing: .8px;
+      text-transform: uppercase;
+    }
+
+    .food-card-v .card-name {
+      font-size: 13px;
+      font-weight: 700;
+      margin: 3px 0 4px;
+      line-height: 1.3;
+    }
+
+    .food-card-v .card-meta {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .food-card-v .rating {
+      display: flex;
+      align-items: center;
+      gap: 3px;
+      font-size: 11px;
+      color: var(--text2);
+    }
+
+    .food-card-v .rating svg {
+      width: 11px;
+      height: 11px;
+      fill: var(--green);
+      stroke: none;
+    }
+
+    .food-card-v .card-add-sm {
+      background: var(--green);
+      color: var(--text);
+      border: none;
+      width: 26px;
+      height: 26px;
+      border-radius: 8px;
+      font-size: 18px;
+      font-weight: 900;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: transform .2s;
+    }
+
+    .food-card-v .card-add-sm:hover {
+      transform: scale(1.1);
+    }
+
+    /* ── PROMO BANNER ── */
+    .promo-banner {
+      margin: 24px 16px;
+      border-radius: 20px;
+      background: linear-gradient(135deg, #1A4C2E, #0A0A0A);
+      border: 1px solid rgba(26, 76, 46, .2);
+      padding: 20px;
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .promo-banner::before {
+      content: '';
+      position: absolute;
+      right: -30px;
+      top: -30px;
+      width: 120px;
+      height: 120px;
+      background: radial-gradient(circle, rgba(26, 76, 46, .2), transparent 70%);
+    }
+
+    .promo-emoji {
+      font-size: 42px;
+    }
+
+    .promo-text .promo-tag {
+      font-size: 10px;
+      font-weight: 700;
+      color: var(--green);
+      letter-spacing: 1px;
+      text-transform: uppercase;
+    }
+
+    .promo-text h3 {
+      font-size: 16px;
+      font-weight: 800;
+      margin: 4px 0 2px;
+    }
+
+    .promo-text p {
+      font-size: 12px;
+      color: var(--text2);
+    }
+
+    .promo-badge {
+      margin-left: auto;
+      flex-shrink: 0;
+      background: var(--green);
+      color: var(--text);
+      font-size: 11px;
+      font-weight: 900;
+      padding: 8px 12px;
+      border-radius: 12px;
+      text-align: center;
+      line-height: 1.2;
+    }
+
+    /* ── BOTTOM NAV ── */
+    .bottom-nav {
+      position: fixed;
+      bottom: 0;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 100%;
+      max-width: 430px;
+      background: rgba(10, 10, 10, .95);
+      backdrop-filter: blur(20px);
+      border-top: 1px solid rgba(26, 76, 46, .12);
+      display: flex;
+      justify-content: space-around;
+      align-items: center;
+      padding: 12px 0 env(safe-area-inset-bottom);
+      z-index: 100;
+    }
+
+    .nav-item {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 4px;
+      cursor: pointer;
+      padding: 4px 16px;
+      border: none;
+      background: none;
+      color: var(--text2);
+      transition: color .2s;
+    }
+
+    .nav-item.active {
+      color: var(--green);
+    }
+
+    .nav-item svg {
+      width: 22px;
+      height: 22px;
+      fill: none;
+      stroke: currentColor;
+      stroke-width: 2;
+      stroke-linecap: round;
+      stroke-linejoin: round;
+    }
+
+    .nav-item span {
+      font-size: 10px;
+      font-weight: 600;
+      font-family: 'Outfit', sans-serif;
+    }
+
+    .nav-item.active .nav-center-dot {
+      width: 4px;
+      height: 4px;
+      border-radius: 50%;
+      background: var(--green);
+      margin-top: 2px;
+    }
+
+    /* ── CART MODAL ── */
+    .cart-overlay {
+      position: fixed;
+      inset: 0;
+      z-index: 200;
+      background: rgba(0, 0, 0, .7);
+      backdrop-filter: blur(4px);
+      display: none;
+      align-items: flex-end;
+    }
+
+    .cart-overlay.open {
+      display: flex;
+    }
+
+    .cart-sheet {
+      width: 100%;
+      max-width: 430px;
+      margin: 0 auto;
+      background: var(--black2);
+      border-radius: 28px 28px 0 0;
+      padding: 20px 20px calc(24px + env(safe-area-inset-bottom));
+      max-height: 80vh;
+      overflow-y: auto;
+      animation: slideUp .35s ease;
+    }
+
+    @keyframes slideUp {
+      from {
+        transform: translateY(100%);
+      }
+
+      to {
+        transform: translateY(0);
+      }
+    }
+
+    .cart-handle {
+      width: 40px;
+      height: 4px;
+      border-radius: 2px;
+      background: var(--gray2);
+      margin: 0 auto 20px;
+    }
+
+    .cart-sheet h2 {
+      font-size: 20px;
+      font-weight: 800;
+      margin-bottom: 16px;
+    }
+
+    .cart-empty {
+      text-align: center;
+      padding: 40px 0;
+      color: var(--text2);
+    }
+
+    .cart-empty .cart-empty-icon {
+      font-size: 52px;
+      margin-bottom: 12px;
+    }
+
+    .cart-item {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding: 14px 0;
+      border-bottom: 1px solid var(--gray);
+    }
+
+    .cart-item img {
+      width: 60px;
+      height: 60px;
+      border-radius: 12px;
+      object-fit: cover;
+      flex-shrink: 0;
+    }
+
+    .cart-item-info {
+      flex: 1;
+    }
+
+    .cart-item-name {
+      font-size: 14px;
+      font-weight: 700;
+    }
+
+    .cart-item-price {
+      font-size: 14px;
+      font-weight: 800;
+      color: var(--green);
+      margin-top: 2px;
+    }
+
+    .qty-ctrl {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .qty-btn {
+      width: 28px;
+      height: 28px;
+      border-radius: 8px;
+      border: 1.5px solid var(--gray2);
+      background: none;
+      color: var(--text);
+      font-size: 16px;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .qty-num {
+      font-size: 14px;
+      font-weight: 700;
+      min-width: 16px;
+      text-align: center;
+    }
+
+    .cart-total {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 16px 0 0;
+      margin-top: 8px;
+    }
+
+    .cart-total-label {
+      font-size: 15px;
+      color: var(--text2);
+    }
+
+    .cart-total-price {
+      font-size: 22px;
+      font-weight: 900;
+      color: var(--green);
+    }
+
+    .checkout-btn {
+      width: 100%;
+      margin-top: 16px;
+      padding: 16px;
+      border-radius: var(--radius);
+      background: var(--green);
+      color: var(--text);
+      border: none;
+      font-family: 'Outfit', sans-serif;
+      font-size: 16px;
+      font-weight: 800;
+      cursor: pointer;
+      transition: transform .2s, box-shadow .2s;
+    }
+
+    .checkout-btn:hover {
+      transform: scale(1.02);
+      box-shadow: 0 8px 24px rgba(26, 76, 46, .4);
+    }
+
+    /* ── BOTTOM SPACER ── */
+    .spacer {
+      height: 90px;
+    }
+
+    /* ── TOAST ── */
+    .toast {
+      position: fixed;
+      bottom: 90px;
+      left: 50%;
+      transform: translateX(-50%) translateY(20px);
+      background: var(--black3);
+      border: 1px solid rgba(26, 76, 46, .3);
+      color: var(--text);
+      padding: 12px 20px;
+      border-radius: 100px;
+      font-size: 13px;
+      font-weight: 600;
+      white-space: nowrap;
+      opacity: 0;
+      transition: all .3s;
+      z-index: 400;
+      pointer-events: none;
+    }
+
+    .toast.show {
+      opacity: 1;
+      transform: translateX(-50%) translateY(0);
+    }
+
+    /* ── SIDES MODAL ── */
+    .sides-modal {
+      position: fixed;
+      inset: 0;
+      z-index: 350;
+      background: rgba(0, 0, 0, .8);
+      backdrop-filter: blur(10px);
+      display: none;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+    }
+
+    .sides-modal.open {
+      display: flex;
+    }
+
+    .sides-content {
+      background: var(--black2);
+      border: 1px solid var(--green);
+      border-radius: 24px;
+      padding: 24px;
+      width: 100%;
+      max-width: 360px;
+    }
+
+    .side-option {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 12px;
+      border-radius: 12px;
+      background: var(--black3);
+      margin-bottom: 8px;
+      cursor: pointer;
+      border: 1px solid transparent;
+    }
+
+    .side-option.selected {
+      border-color: var(--green);
+      background: rgba(26, 76, 46, .1);
+    }
+
+    .side-option span {
+      font-size: 14px;
+      font-weight: 600;
+    }
+  </style>
 </head>
+
 <body>
 
-<!-- SPLASH -->
-<div id="splash">
-  <div class="logo-big">kleat<span>.ma</span></div>
-  <div class="tagline">Satisfy the Rush</div>
-  <div class="loader-circle"></div>
-</div>
-
-<!-- ONBOARDING -->
-<div id="onboarding">
-  <h1 class="ob-title">Bienvenue chez Kleat</h1>
-  <p class="ob-sub">Commençons par faire connaissance pour vos livraisons.</p>
-  <div class="ob-input-group">
-    <span class="ob-label">Votre Nom</span>
-    <input type="text" id="user-name" class="ob-input" placeholder="Ex: Ahmed Alaoui"/>
+  <!-- SPLASH -->
+  <div id="splash">
+    <div class="logo-big">kleat<span>.ma</span></div>
+    <div class="tagline">Satisfy the Rush</div>
+    <div class="loader-circle"></div>
   </div>
-  <div class="ob-input-group">
-    <span class="ob-label">Adresse de livraison</span>
-    <input type="text" id="user-address" class="ob-input" placeholder="Ex: 12 Rue des Fleurs, Casablanca"/>
-  </div>
-  <button class="ob-btn" onclick="finishOnboarding()">Découvrir le menu</button>
-</div>
 
-<!-- APP -->
-<div id="app">
-
-  <!-- TOP NAV -->
-  <nav class="top-nav">
-    <div class="nav-logo">kleat<span>.ma</span></div>
-    <div class="nav-icons">
-      <button class="icon-btn" id="notif-btn" aria-label="Notifications">
-        <svg viewBox="0 0 24 24"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 0 1-3.46 0"/></svg>
-      </button>
-      <button class="icon-btn" id="cart-btn" aria-label="Panier">
-        <svg viewBox="0 0 24 24"><circle cx="9" cy="21" r="1"/><circle cx="20" cy="21" r="1"/><path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"/></svg>
-        <span class="cart-badge" id="cart-count">0</span>
-      </button>
+  <!-- ONBOARDING -->
+  <div id="onboarding">
+    <h1 class="ob-title">Bienvenue chez Kleat</h1>
+    <p class="ob-sub">Commençons par faire connaissance pour vos livraisons.</p>
+    <div class="ob-input-group">
+      <span class="ob-label">Votre Nom</span>
+      <input type="text" id="user-name" class="ob-input" placeholder="Ex: Ahmed Alaoui" />
     </div>
-  </nav>
+    <div class="ob-input-group">
+      <span class="ob-label">Adresse de livraison</span>
+      <input type="text" id="user-address" class="ob-input" placeholder="Ex: 12 Rue des Fleurs, Casablanca" />
+    </div>
+    <button class="ob-btn" onclick="finishOnboarding()">Découvrir le menu</button>
+  </div>
 
-  <!-- HERO -->
-  <div class="hero">
-    <div class="hero-content">
-      <div class="hero-tag">🔥 &nbsp;Satisfy the Rush</div>
-      <div>
-        <div class="hero-title">Le goût <em>authentique</em><br/>livré chez vous</div>
-        <div class="hero-sub">Livraison Rapide • Paiement à la Livraison</div>
+  <!-- APP -->
+  <div id="app">
+
+    <!-- TOP NAV -->
+    <nav class="top-nav">
+      <div class="nav-logo">kleat<span>.ma</span></div>
+      <div class="nav-icons">
+        <button class="icon-btn" id="notif-btn" aria-label="Notifications">
+          <svg viewBox="0 0 24 24">
+            <path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9" />
+            <path d="M13.73 21a2 2 0 0 1-3.46 0" />
+          </svg>
+        </button>
+        <button class="icon-btn" id="cart-btn" aria-label="Panier">
+          <svg viewBox="0 0 24 24">
+            <circle cx="9" cy="21" r="1" />
+            <circle cx="20" cy="21" r="1" />
+            <path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6" />
+          </svg>
+          <span class="cart-badge" id="cart-count">0</span>
+        </button>
+      </div>
+    </nav>
+
+    <!-- HERO -->
+    <div class="hero">
+      <div class="hero-glow"></div>
+      <div class="hero-content">
+        <div class="hero-tag">🔥 &nbsp;Satisfy the Rush</div>
+        <div>
+          <div class="hero-title">Le goût <em>authentique</em><br />livré chez vous</div>
+          <div class="hero-sub">Livraison Rapide • Paiement à la Livraison</div>
+        </div>
       </div>
     </div>
+
+    <!-- SEARCH -->
+    <div class="search-wrap">
+      <div class="search-bar">
+        <svg viewBox="0 0 24 24">
+          <circle cx="11" cy="11" r="8" />
+          <line x1="21" y1="21" x2="16.65" y2="16.65" />
+        </svg>
+        <input type="text" placeholder="Chercher un plat, une catégorie…" id="search-input" oninput="filterMenu()" />
+        <button class="filter-btn" aria-label="Filtrer">
+          <svg viewBox="0 0 24 24">
+            <line x1="4" y1="6" x2="20" y2="6" />
+            <line x1="8" y1="12" x2="16" y2="12" />
+            <line x1="11" y1="18" x2="13" y2="18" />
+          </svg>
+        </button>
+      </div>
+    </div>
+
+    <!-- CATEGORIES -->
+    <div class="section-header">
+      <div class="section-title">Catégories</div>
+    </div>
+    <div class="cats-scroll" id="cats-scroll">
+      <div class="cat-chip active" onclick="filterCat('Tout',this)">Tout</div>
+      <div class="cat-chip" onclick="filterCat('Sandwich',this)">🥪 Sandwich</div>
+      <div class="cat-chip" onclick="filterCat('Wraps',this)">🌯 Wraps</div>
+      <div class="cat-chip" onclick="filterCat('Shawarma',this)">🥙 Shawarma</div>
+      <div class="cat-chip" onclick="filterCat('Burger',this)">🍔 Burger</div>
+      <div class="cat-chip" onclick="filterCat('Plat',this)">🍽️ Plat</div>
+      <div class="cat-chip" onclick="filterCat('Pasticcio',this)">🥘 Pasticcio</div>
+      <div class="cat-chip" onclick="filterCat('Pide',this)">🍕 Pide</div>
+      <div class="cat-chip" onclick="filterCat('Pasta',this)">🍝 Pasta</div>
+      <div class="cat-chip" onclick="filterCat('Salade',this)">🥗 Salade</div>
+    </div>
+
+    <!-- FEATURED -->
+    <div class="section-header">
+      <div class="section-title">✨ À la une</div>
+    </div>
+    <div class="cards-scroll" id="featured-scroll"></div>
+
+    <!-- PROMO BANNER -->
+    <div class="promo-banner">
+      <div class="promo-emoji">🎁</div>
+      <div class="promo-text">
+        <div class="promo-tag">Offre limitée</div>
+        <h3>Livraison gratuite</h3>
+        <p>Sur votre 1ère commande</p>
+      </div>
+      <div class="promo-badge">CODE<br />KLEAT1</div>
+    </div>
+
+    <!-- MENU GRID -->
+    <div class="section-header" id="menu-section">
+      <div class="section-title">Notre Menu</div>
+      <span id="menu-count" style="color:var(--text2);font-size:13px;"></span>
+    </div>
+    <div class="menu-grid" id="menu-grid"></div>
+
+    <div class="spacer"></div>
   </div>
 
-  <!-- SEARCH -->
-  <div class="search-wrap">
-    <div class="search-bar">
-      <svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
-      <input type="text" placeholder="Chercher un plat, une catégorie…" id="search-input" oninput="filterMenu()"/>
-      <button class="filter-btn" aria-label="Filtrer">
-        <svg viewBox="0 0 24 24"><line x1="4" y1="6" x2="20" y2="6"/><line x1="8" y1="12" x2="16" y2="12"/><line x1="11" y1="18" x2="13" y2="18"/></svg>
-      </button>
+  <!-- BOTTOM NAV -->
+  <nav class="bottom-nav">
+    <button class="nav-item active" onclick="scrollTop()">
+      <svg viewBox="0 0 24 24">
+        <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z" />
+        <polyline points="9 22 9 12 15 12 15 22" />
+      </svg>
+      <span>Accueil</span>
+    </button>
+    <button class="nav-item" onclick="document.getElementById('menu-section').scrollIntoView({behavior:'smooth'})">
+      <svg viewBox="0 0 24 24">
+        <path d="M3 6h18M3 12h18M3 18h18" />
+      </svg>
+      <span>Menu</span>
+    </button>
+    <button class="nav-item" onclick="openCart()">
+      <svg viewBox="0 0 24 24">
+        <circle cx="9" cy="21" r="1" />
+        <circle cx="20" cy="21" r="1" />
+        <path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6" />
+      </svg>
+      <span>Panier</span>
+    </button>
+    <button class="nav-item" id="info-btn">
+      <svg viewBox="0 0 24 24">
+        <circle cx="12" cy="12" r="10" />
+        <line x1="12" y1="16" x2="12" y2="12" />
+        <line x1="12" y1="8" x2="12.01" y2="8" />
+      </svg>
+      <span>Infos</span>
+    </button>
+  </nav>
+
+  <!-- INFO MODAL -->
+  <div class="cart-overlay" id="info-overlay" onclick="closeInfoOutside(event)">
+    <div class="cart-sheet">
+      <div class="cart-handle"></div>
+      <h2 style="color:var(--green)">📍 À propos de Kleat</h2>
+      <div style="margin-bottom:20px;">
+        <p style="color:var(--text2); font-size:14px; line-height:1.6">
+          Kleat est votre destination incontournable pour une cuisine savoureuse et rapide. Nous nous engageons à vous
+          servir des plats de qualité supérieure, préparés avec passion.
+        </p>
+      </div>
+      <div class="ob-input-group">
+        <span class="ob-label">Horaires</span>
+        <p style="font-size:14px;">Lun - Dim: 11:30 - 23:30</p>
+      </div>
+      <div class="ob-input-group">
+        <span class="ob-label">Contact</span>
+        <p style="font-size:14px;">+212 5XX XX XX XX</p>
+      </div>
+      <button class="ob-btn" onclick="document.getElementById('info-overlay').classList.remove('open')">Fermer</button>
     </div>
   </div>
 
-  <!-- CATEGORIES -->
-  <div class="section-header">
-    <div class="section-title">Catégories</div>
-  </div>
-  <div class="cats-scroll" id="cats-scroll">
-    <div class="cat-chip active" onclick="filterCat('Tout',this)">Tout</div>
-    <div class="cat-chip" onclick="filterCat('Sandwich',this)">🥪 Sandwich</div>
-    <div class="cat-chip" onclick="filterCat('Wraps',this)">🌯 Wraps</div>
-    <div class="cat-chip" onclick="filterCat('Shawarma',this)">🥙 Shawarma</div>
-    <div class="cat-chip" onclick="filterCat('Burger',this)">🍔 Burger</div>
-    <div class="cat-chip" onclick="filterCat('Plat',this)">🍽️ Plat</div>
-    <div class="cat-chip" onclick="filterCat('Pasticcio',this)">🥘 Pasticcio</div>
-    <div class="cat-chip" onclick="filterCat('Pide',this)">🍕 Pide</div>
-    <div class="cat-chip" onclick="filterCat('Pasta',this)">🍝 Pasta</div>
-    <div class="cat-chip" onclick="filterCat('Salade',this)">🥗 Salade</div>
-  </div>
-
-  <!-- FEATURED -->
-  <div class="section-header">
-    <div class="section-title">✨ À la une</div>
-  </div>
-  <div class="cards-scroll" id="featured-scroll"></div>
-
-  <!-- PROMO BANNER -->
-  <div class="promo-banner">
-    <div class="promo-emoji">🎁</div>
-    <div class="promo-text">
-      <div class="promo-tag">Offre limitée</div>
-      <h3>Livraison gratuite</h3>
-      <p>Sur votre 1ère commande</p>
+  <!-- CART OVERLAY -->
+  <div class="cart-overlay" id="cart-overlay" onclick="closeCartOutside(event)">
+    <div class="cart-sheet">
+      <div class="cart-handle"></div>
+      <h2>🛒 Mon Panier</h2>
+      <div id="cart-body"></div>
     </div>
-    <div class="promo-badge">CODE<br/>KLEAT1</div>
   </div>
 
-  <!-- MENU GRID -->
-  <div class="section-header" id="menu-section">
-    <div class="section-title">Notre Menu</div>
-    <span id="menu-count" style="color:var(--text2);font-size:13px;"></span>
-  </div>
-  <div class="menu-grid" id="menu-grid"></div>
-
-  <div class="spacer"></div>
-</div>
-
-<!-- BOTTOM NAV -->
-<nav class="bottom-nav">
-  <button class="nav-item active" onclick="scrollTop()">
-    <svg viewBox="0 0 24 24"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
-    <span>Accueil</span>
-  </button>
-  <button class="nav-item" onclick="document.getElementById('menu-section').scrollIntoView({behavior:'smooth'})">
-    <svg viewBox="0 0 24 24"><path d="M3 6h18M3 12h18M3 18h18"/></svg>
-    <span>Menu</span>
-  </button>
-  <button class="nav-item" onclick="openCart()">
-    <svg viewBox="0 0 24 24"><circle cx="9" cy="21" r="1"/><circle cx="20" cy="21" r="1"/><path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"/></svg>
-    <span>Panier</span>
-  </button>
-  <button class="nav-item" id="info-btn">
-    <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><line x1="12" y1="8" x2="12.01" y2="8"/></svg>
-    <span>Infos</span>
-  </button>
-</nav>
-
-<!-- INFO MODAL -->
-<div class="cart-overlay" id="info-overlay" onclick="closeInfoOutside(event)">
-  <div class="cart-sheet">
-    <div class="cart-handle"></div>
-    <h2 style="color:var(--green)">📍 À propos de Kleat</h2>
-    <div style="margin-bottom:20px;">
-      <p style="color:var(--text2); font-size:14px; line-height:1.6">
-        Kleat est votre destination incontournable pour une cuisine savoureuse et rapide. Nous nous engageons à vous servir des plats de qualité supérieure, préparés avec passion.
-      </p>
+  <!-- SIDES SELECTION -->
+  <div class="sides-modal" id="sides-modal">
+    <div class="sides-content">
+      <h3 style="margin-bottom:12px;font-size:18px;">🥗 Choisissez 2 garnitures</h3>
+      <p style="color:var(--text2);font-size:13px;margin-bottom:20px;">Inclus avec votre plat</p>
+      <div id="sides-list">
+        <div class="side-option" onclick="toggleSide(this, 'Frite')"><span>Frite</span></div>
+        <div class="side-option" onclick="toggleSide(this, 'Riz')"><span>Riz</span></div>
+        <div class="side-option" onclick="toggleSide(this, 'Salade Kleat')"><span>Salade Kleat</span></div>
+        <div class="side-option" onclick="toggleSide(this, 'Purée')"><span>Purée</span></div>
+        <div class="side-option" onclick="toggleSide(this, 'Pâte')"><span>Pâte</span></div>
+        <div class="side-option" onclick="toggleSide(this, 'Légumes Sautés')"><span>Légumes Sautés</span></div>
+      </div>
+      <button class="ob-btn" id="confirm-sides-btn" onclick="confirmSides()">Confirmer</button>
     </div>
-    <div class="ob-input-group">
-       <span class="ob-label">Horaires</span>
-       <p style="font-size:14px;">Lun - Dim: 11:30 - 23:30</p>
-    </div>
-    <div class="ob-input-group">
-       <span class="ob-label">Contact</span>
-       <p style="font-size:14px;">+212 5XX XX XX XX</p>
-    </div>
-    <button class="ob-btn" onclick="document.getElementById('info-overlay').classList.remove('open')">Fermer</button>
   </div>
-</div>
 
-<!-- CART OVERLAY -->
-<div class="cart-overlay" id="cart-overlay" onclick="closeCartOutside(event)">
-  <div class="cart-sheet">
-    <div class="cart-handle"></div>
-    <h2>🛒 Mon Panier</h2>
-    <div id="cart-body"></div>
-  </div>
-</div>
+  <!-- TOAST -->
+  <div class="toast" id="toast"></div>
 
-<!-- SIDES SELECTION -->
-<div class="sides-modal" id="sides-modal">
-  <div class="sides-content">
-    <h3 style="margin-bottom:12px;font-size:18px;">🥗 Choisissez 2 garnitures</h3>
-    <p style="color:var(--text2);font-size:13px;margin-bottom:20px;">Inclus avec votre plat</p>
-    <div id="sides-list">
-      <div class="side-option" onclick="toggleSide(this, 'Frite')"><span>Frite</span></div>
-      <div class="side-option" onclick="toggleSide(this, 'Riz')"><span>Riz</span></div>
-      <div class="side-option" onclick="toggleSide(this, 'Salade Kleat')"><span>Salade Kleat</span></div>
-      <div class="side-option" onclick="toggleSide(this, 'Purée')"><span>Purée</span></div>
-      <div class="side-option" onclick="toggleSide(this, 'Pâte')"><span>Pâte</span></div>
-      <div class="side-option" onclick="toggleSide(this, 'Légumes Sautés')"><span>Légumes Sautés</span></div>
-    </div>
-    <button class="ob-btn" id="confirm-sides-btn" onclick="confirmSides()">Confirmer</button>
-  </div>
-</div>
+  <script>
+    const MENU = [
+      // SANDWICH
+      { id: 1, name: "Sandwich Thon", cat: "Sandwich", price: 20, emoji: "🐟" },
+      { id: 2, name: "Sandwich Poulet", cat: "Sandwich", price: 27, emoji: "🍗" },
+      { id: 3, name: "Sandwich Cordon Bleu", cat: "Sandwich", price: 29, emoji: "🧀" },
+      { id: 4, name: "Sandwich Viande Hachée", cat: "Sandwich", price: 30, emoji: "🥩" },
+      { id: 5, name: "Sandwich Kleat", cat: "Sandwich", price: 33, emoji: "🥪" },
+      // WRAPS
+      { id: 6, name: "Chicken Burrito", cat: "Wraps", price: 29, emoji: "🌯" },
+      { id: 7, name: "Beef Burrito", cat: "Wraps", price: 32, emoji: "🌯" },
+      { id: 8, name: "Crunchy Burrito", cat: "Wraps", price: 32, emoji: "🌯" },
+      // SHAWARMA
+      { id: 9, name: "Shawarma", cat: "Shawarma", price: 32, emoji: "🥙" },
+      { id: 10, name: "Shawarma Fromage", cat: "Shawarma", price: 35, emoji: "🥙" },
+      { id: 11, name: "Shawarma Super", cat: "Shawarma", price: 38, emoji: "🥙" },
+      // PASTICCIO
+      { id: 12, name: "Pasticcio Charcuterie", cat: "Pasticcio", price: 28, emoji: "🥘" },
+      { id: 13, name: "Pasticcio Poulet", cat: "Pasticcio", price: 30, emoji: "🥘" },
+      { id: 14, name: "Pasticcio Viande Haché", cat: "Pasticcio", price: 32, emoji: "🥘" },
+      { id: 15, name: "Pasticcio Mixte", cat: "Pasticcio", price: 36, emoji: "🥘" },
+      { id: 16, name: "Pasticcio Fruit de Mer", cat: "Pasticcio", price: 45, emoji: "🥘" },
+      // BURGER
+      { id: 17, name: "Chicken Burger", cat: "Burger", price: 30, emoji: "🍔" },
+      { id: 18, name: "Cheeseburger", cat: "Burger", price: 33, emoji: "🍔" },
+      { id: 19, name: "Doublecheese", cat: "Burger", price: 35, emoji: "🍔" },
+      { id: 20, name: "Burger Kleat", cat: "Burger", price: 45, emoji: "🍔" },
+      // PIDE
+      { id: 21, name: "Pide Pepperoni", cat: "Pide", price: 36, emoji: "🍕" },
+      { id: 22, name: "Pide Poulet", cat: "Pide", price: 34, emoji: "🍕" },
+      { id: 23, name: "Pide Viande Haché", cat: "Pide", price: 38, emoji: "🍕" },
+      { id: 24, name: "Pide 4 Fromages", cat: "Pide", price: 39, emoji: "🍕" },
+      { id: 25, name: "Pide Fruit de Mer", cat: "Pide", price: 42, emoji: "🍕" },
+      // CALZONE
+      { id: 26, name: "Calzone Poulet", cat: "Calzone", price: 35, emoji: "🥟" },
+      { id: 27, name: "Calzone Viande Hachée", cat: "Calzone", price: 40, emoji: "🥟" },
+      { id: 28, name: "Calzone Fruits de Mer", cat: "Calzone", price: 45, emoji: "🥟" },
+      // BAGUETTE
+      { id: 29, name: "Baguette Poulet", cat: "Baguette", price: 45, emoji: "🥖" },
+      { id: 30, name: "Baguette Viande Haché", cat: "Baguette", price: 50, emoji: "🥖" },
+      { id: 31, name: "Baguette Fruits de Mer", cat: "Baguette", price: 55, emoji: "🥖" },
+      // PLAT
+      { id: 32, name: "Chicken Crispy", cat: "Plat", price: 42, emoji: "🍽️", hasGarniture: true },
+      { id: 33, name: "Brochette Poulet", cat: "Plat", price: 45, emoji: "🍽️", hasGarniture: true },
+      { id: 34, name: "Escalope Poulet", cat: "Plat", price: 47, emoji: "🍽️", hasGarniture: true },
+      { id: 35, name: "Plat Mixte", cat: "Plat", price: 50, emoji: "🍽️", hasGarniture: true },
+      { id: 36, name: "Brochette Viande Hachée", cat: "Plat", price: 50, emoji: "🍽️", hasGarniture: true },
+      { id: 37, name: "Cordon Bleu Plat", cat: "Plat", price: 50, emoji: "🍽️", hasGarniture: true },
+      { id: 38, name: "Emince de Poulet", cat: "Plat", price: 50, emoji: "🍽️", hasGarniture: true },
+      { id: 39, name: "Parmigiana", cat: "Plat", price: 50, emoji: "🍽️", hasGarniture: true },
+      { id: 40, name: "Cordon Bleu Champignon", cat: "Plat", price: 55, emoji: "🍽️", hasGarniture: true },
+      // PASTA
+      { id: 41, name: "Pasta Carbonara", cat: "Pasta", price: 40, emoji: "🍝" },
+      { id: 42, name: "Pasta Tono", cat: "Pasta", price: 40, emoji: "🍝" },
+      { id: 43, name: "Pasta Bolognaise", cat: "Pasta", price: 45, emoji: "🍝" },
+      { id: 44, name: "Pasta Alfredo", cat: "Pasta", price: 45, emoji: "🍝" },
+      { id: 45, name: "Pasta Quatro Fromagi", cat: "Pasta", price: 48, emoji: "🍝" },
+      { id: 46, name: "Pasta Marinara", cat: "Pasta", price: 55, emoji: "🍝" },
+      { id: 47, name: "Chicken Pasta", cat: "Pasta", price: 28, emoji: "🍝" },
+      // SALADE
+      { id: 48, name: "Salade Nicoise", cat: "Salade", price: 35, emoji: "🥗" },
+      { id: 49, name: "Salade Cesar", cat: "Salade", price: 40, emoji: "🥗" },
+      { id: 50, name: "Salade Pecheur", cat: "Salade", price: 50, emoji: "🥗" },
+      { id: 51, name: "Salade Kleat", cat: "Salade", price: 50, emoji: "🥗" },
+    ];
 
-<!-- TOAST -->
-<div class="toast" id="toast"></div>
+    let cart = {};
+    let activeCategory = 'Tout';
+    let pendingItem = null;
+    let selectedSides = [];
 
-<script>
-const MENU = [
-  // SANDWICH
-  {id:1, name:"Sandwich Thon", cat:"Sandwich", price:20, emoji:"🐟"},
-  {id:2, name:"Sandwich Poulet", cat:"Sandwich", price:27, emoji:"🍗"},
-  {id:3, name:"Sandwich Cordon Bleu", cat:"Sandwich", price:29, emoji:"🧀"},
-  {id:4, name:"Sandwich Viande Hachée", cat:"Sandwich", price:30, emoji:"🥩"},
-  {id:5, name:"Sandwich Kleat", cat:"Sandwich", price:33, emoji:"🥪"},
-  // WRAPS
-  {id:6, name:"Chicken Burrito", cat:"Wraps", price:29, emoji:"🌯"},
-  {id:7, name:"Beef Burrito", cat:"Wraps", price:32, emoji:"🌯"},
-  {id:8, name:"Crunchy Burrito", cat:"Wraps", price:32, emoji:"🌯"},
-  // SHAWARMA
-  {id:9, name:"Shawarma", cat:"Shawarma", price:32, emoji:"🥙"},
-  {id:10, name:"Shawarma Fromage", cat:"Shawarma", price:35, emoji:"🥙"},
-  {id:11, name:"Shawarma Super", cat:"Shawarma", price:38, emoji:"🥙"},
-  // PASTICCIO
-  {id:12, name:"Pasticcio Charcuterie", cat:"Pasticcio", price:28, emoji:"🥘"},
-  {id:13, name:"Pasticcio Poulet", cat:"Pasticcio", price:30, emoji:"🥘"},
-  {id:14, name:"Pasticcio Viande Haché", cat:"Pasticcio", price:32, emoji:"🥘"},
-  {id:15, name:"Pasticcio Mixte", cat:"Pasticcio", price:36, emoji:"🥘"},
-  {id:16, name:"Pasticcio Fruit de Mer", cat:"Pasticcio", price:45, emoji:"🥘"},
-  // BURGER
-  {id:17, name:"Chicken Burger", cat:"Burger", price:30, emoji:"🍔"},
-  {id:18, name:"Cheeseburger", cat:"Burger", price:33, emoji:"🍔"},
-  {id:19, name:"Doublecheese", cat:"Burger", price:35, emoji:"🍔"},
-  {id:20, name:"Burger Kleat", cat:"Burger", price:45, emoji:"🍔"},
-  // PIDE
-  {id:21, name:"Pide Pepperoni", cat:"Pide", price:36, emoji:"🍕"},
-  {id:22, name:"Pide Poulet", cat:"Pide", price:34, emoji:"🍕"},
-  {id:23, name:"Pide Viande Haché", cat:"Pide", price:38, emoji:"🍕"},
-  {id:24, name:"Pide 4 Fromages", cat:"Pide", price:39, emoji:"🍕"},
-  {id:25, name:"Pide Fruit de Mer", cat:"Pide", price:42, emoji:"🍕"},
-  // CALZONE
-  {id:26, name:"Calzone Poulet", cat:"Calzone", price:35, emoji:"🥟"},
-  {id:27, name:"Calzone Viande Hachée", cat:"Calzone", price:40, emoji:"🥟"},
-  {id:28, name:"Calzone Fruits de Mer", cat:"Calzone", price:45, emoji:"🥟"},
-  // BAGUETTE
-  {id:29, name:"Baguette Poulet", cat:"Baguette", price:45, emoji:"🥖"},
-  {id:30, name:"Baguette Viande Haché", cat:"Baguette", price:50, emoji:"🥖"},
-  {id:31, name:"Baguette Fruits de Mer", cat:"Baguette", price:55, emoji:"🥖"},
-  // PLAT
-  {id:32, name:"Chicken Crispy", cat:"Plat", price:42, emoji:"🍽️", hasGarniture:true},
-  {id:33, name:"Brochette Poulet", cat:"Plat", price:45, emoji:"🍽️", hasGarniture:true},
-  {id:34, name:"Escalope Poulet", cat:"Plat", price:47, emoji:"🍽️", hasGarniture:true},
-  {id:35, name:"Plat Mixte", cat:"Plat", price:50, emoji:"🍽️", hasGarniture:true},
-  {id:36, name:"Brochette Viande Hachée", cat:"Plat", price:50, emoji:"🍽️", hasGarniture:true},
-  {id:37, name:"Cordon Bleu Plat", cat:"Plat", price:50, emoji:"🍽️", hasGarniture:true},
-  {id:38, name:"Emince de Poulet", cat:"Plat", price:50, emoji:"🍽️", hasGarniture:true},
-  {id:39, name:"Parmigiana", cat:"Plat", price:50, emoji:"🍽️", hasGarniture:true},
-  {id:40, name:"Cordon Bleu Champignon", cat:"Plat", price:55, emoji:"🍽️", hasGarniture:true},
-  // PASTA
-  {id:41, name:"Pasta Carbonara", cat:"Pasta", price:40, emoji:"🍝"},
-  {id:42, name:"Pasta Tono", cat:"Pasta", price:40, emoji:"🍝"},
-  {id:43, name:"Pasta Bolognaise", cat:"Pasta", price:45, emoji:"🍝"},
-  {id:44, name:"Pasta Alfredo", cat:"Pasta", price:45, emoji:"🍝"},
-  {id:45, name:"Pasta Quatro Fromagi", cat:"Pasta", price:48, emoji:"🍝"},
-  {id:46, name:"Pasta Marinara", cat:"Pasta", price:55, emoji:"🍝"},
-  {id:47, name:"Chicken Pasta", cat:"Pasta", price:28, emoji:"🍝"},
-  // SALADE
-  {id:48, name:"Salade Nicoise", cat:"Salade", price:35, emoji:"🥗"},
-  {id:49, name:"Salade Cesar", cat:"Salade", price:40, emoji:"🥗"},
-  {id:50, name:"Salade Pecheur", cat:"Salade", price:50, emoji:"🥗"},
-  {id:51, name:"Salade Kleat", cat:"Salade", price:50, emoji:"🥗"},
-];
-
-let cart = {};
-let activeCategory = 'Tout';
-let pendingItem = null;
-let selectedSides = [];
-
-function renderFeatured() {
-  const featured = [MENU[4], MENU[7], MENU[10], MENU[19], MENU[31], MENU[40]];
-  const el = document.getElementById('featured-scroll');
-  el.innerHTML = featured.map(item => `
+    function renderFeatured() {
+      const featured = [MENU[4], MENU[7], MENU[10], MENU[19], MENU[31], MENU[40]];
+      const el = document.getElementById('featured-scroll');
+      el.innerHTML = featured.map(item => `
     <div class="food-card-h" onclick="addToCart(${item.id})">
       <div class="card-body">
         <div class="card-cat">${item.emoji} ${item.cat}</div>
@@ -653,17 +1291,17 @@ function renderFeatured() {
       </div>
     </div>
   `).join('');
-}
+    }
 
-function renderMenu(items) {
-  const el = document.getElementById('menu-grid');
-  if(!el) return;
-  document.getElementById('menu-count').textContent = `${items.length} plat${items.length>1?'s':''}`;
-  if (!items.length) {
-    el.innerHTML = `<div style="grid-column:1/-1;text-align:center;padding:40px 0;color:var(--text2);">Aucun résultat 🫤</div>`;
-    return;
-  }
-  el.innerHTML = items.map(item => `
+    function renderMenu(items) {
+      const el = document.getElementById('menu-grid');
+      if (!el) return;
+      document.getElementById('menu-count').textContent = `${items.length} plat${items.length > 1 ? 's' : ''}`;
+      if (!items.length) {
+        el.innerHTML = `<div style="grid-column:1/-1;text-align:center;padding:40px 0;color:var(--text2);">Aucun résultat 🫤</div>`;
+        return;
+      }
+      el.innerHTML = items.map(item => `
     <div class="food-card-v" onclick="addToCart(${item.id})">
       <div class="card-body">
         <div class="card-cat">${item.emoji} ${item.cat}</div>
@@ -677,91 +1315,91 @@ function renderMenu(items) {
       </div>
     </div>
   `).join('');
-}
+    }
 
-function filterCat(cat, el) {
-  activeCategory = cat;
-  document.querySelectorAll('.cat-chip').forEach(c => c.classList.remove('active'));
-  el.classList.add('active');
-  applyFilters();
-}
+    function filterCat(cat, el) {
+      activeCategory = cat;
+      document.querySelectorAll('.cat-chip').forEach(c => c.classList.remove('active'));
+      el.classList.add('active');
+      applyFilters();
+    }
 
-function filterMenu() { applyFilters(); }
+    function filterMenu() { applyFilters(); }
 
-function applyFilters() {
-  const q = document.getElementById('search-input').value.toLowerCase();
-  let items = MENU;
-  if (activeCategory !== 'Tout') items = items.filter(i => i.cat === activeCategory);
-  if (q) items = items.filter(i => i.name.toLowerCase().includes(q) || i.cat.toLowerCase().includes(q));
-  renderMenu(items);
-}
+    function applyFilters() {
+      const q = document.getElementById('search-input').value.toLowerCase();
+      let items = MENU;
+      if (activeCategory !== 'Tout') items = items.filter(i => i.cat === activeCategory);
+      if (q) items = items.filter(i => i.name.toLowerCase().includes(q) || i.cat.toLowerCase().includes(q));
+      renderMenu(items);
+    }
 
-function addToCart(id) {
-  const item = MENU.find(m => m.id === id);
-  if (!item) return;
+    function addToCart(id) {
+      const item = MENU.find(m => m.id === id);
+      if (!item) return;
 
-  if (item.hasGarniture) {
-    pendingItem = item;
-    selectedSides = [];
-    document.querySelectorAll('.side-option').forEach(o => o.classList.remove('selected'));
-    document.getElementById('sides-modal').classList.add('open');
-    return;
-  }
+      if (item.hasGarniture) {
+        pendingItem = item;
+        selectedSides = [];
+        document.querySelectorAll('.side-option').forEach(o => o.classList.remove('selected'));
+        document.getElementById('sides-modal').classList.add('open');
+        return;
+      }
 
-  processAddToCart(item);
-}
+      processAddToCart(item);
+    }
 
-function toggleSide(el, side) {
-  if (selectedSides.includes(side)) {
-    selectedSides = selectedSides.filter(s => s !== side);
-    el.classList.remove('selected');
-  } else if (selectedSides.length < 2) {
-    selectedSides.push(side);
-    el.classList.add('selected');
-  }
-}
+    function toggleSide(el, side) {
+      if (selectedSides.includes(side)) {
+        selectedSides = selectedSides.filter(s => s !== side);
+        el.classList.remove('selected');
+      } else if (selectedSides.length < 2) {
+        selectedSides.push(side);
+        el.classList.add('selected');
+      }
+    }
 
-function confirmSides() {
-  if (selectedSides.length < 2) {
-    showToast('⚠️ Choisissez 2 garnitures');
-    return;
-  }
-  const itemWithSides = { ...pendingItem, name: `${pendingItem.name} (${selectedSides.join(', ')})` };
-  processAddToCart(itemWithSides);
-  document.getElementById('sides-modal').classList.remove('open');
-}
+    function confirmSides() {
+      if (selectedSides.length < 2) {
+        showToast('⚠️ Choisissez 2 garnitures');
+        return;
+      }
+      const itemWithSides = { ...pendingItem, name: `${pendingItem.name} (${selectedSides.join(', ')})` };
+      processAddToCart(itemWithSides);
+      document.getElementById('sides-modal').classList.remove('open');
+    }
 
-function processAddToCart(item) {
-  // Use unique key for items with specific sides
-  const cartKey = item.hasGarniture ? `custom_${item.id}_${selectedSides.join('_')}` : item.id;
-  
-  if (!cart[cartKey]) {
-    cart[cartKey] = { ...item, qty: 1 };
-  } else {
-    cart[cartKey].qty += 1;
-  }
-  
-  updateCartBadge();
-  showToast(`✅ ${item.name} ajouté !`);
-}
+    function processAddToCart(item) {
+      // Use unique key for items with specific sides
+      const cartKey = item.hasGarniture ? `custom_${item.id}_${selectedSides.join('_')}` : item.id;
 
-function updateCartBadge() {
-  const total = Object.values(cart).reduce((a,b) => a + b.qty, 0);
-  document.getElementById('cart-count').textContent = total;
-}
+      if (!cart[cartKey]) {
+        cart[cartKey] = { ...item, qty: 1 };
+      } else {
+        cart[cartKey].qty += 1;
+      }
 
-function renderCart() {
-  const keys = Object.keys(cart);
-  const el = document.getElementById('cart-body');
-  if (!keys.length) {
-    el.innerHTML = `<div class="cart-empty"><div class="cart-empty-icon">🛒</div><p>Votre panier est vide</p></div>`;
-    return;
-  }
-  let total = 0;
-  let html = keys.map(key => {
-    const item = cart[key];
-    total += item.price * item.qty;
-    return `
+      updateCartBadge();
+      showToast(`✅ ${item.name} ajouté !`);
+    }
+
+    function updateCartBadge() {
+      const total = Object.values(cart).reduce((a, b) => a + b.qty, 0);
+      document.getElementById('cart-count').textContent = total;
+    }
+
+    function renderCart() {
+      const keys = Object.keys(cart);
+      const el = document.getElementById('cart-body');
+      if (!keys.length) {
+        el.innerHTML = `<div class="cart-empty"><div class="cart-empty-icon">🛒</div><p>Votre panier est vide</p></div>`;
+        return;
+      }
+      let total = 0;
+      let html = keys.map(key => {
+        const item = cart[key];
+        total += item.price * item.qty;
+        return `
       <div class="cart-item">
         <div class="cart-item-info">
           <div class="cart-item-name">${item.name}</div>
@@ -773,94 +1411,95 @@ function renderCart() {
           <button class="qty-btn" onclick="changeQty('${key}',1)">+</button>
         </div>
       </div>`;
-  }).join('');
-  html += `
+      }).join('');
+      html += `
     <div class="cart-total">
       <span class="cart-total-label">Total</span>
       <span class="cart-total-price">${total} DH</span>
     </div>
     <button class="checkout-btn" onclick="checkout()">Confirmer Commande • ${total} DH</button>`;
-  el.innerHTML = html;
-}
+      el.innerHTML = html;
+    }
 
-function changeQty(key, delta) {
-  cart[key].qty += delta;
-  if (cart[key].qty <= 0) delete cart[key];
-  updateCartBadge();
-  renderCart();
-}
+    function changeQty(key, delta) {
+      cart[key].qty += delta;
+      if (cart[key].qty <= 0) delete cart[key];
+      updateCartBadge();
+      renderCart();
+    }
 
-function openCart() {
-  renderCart();
-  document.getElementById('cart-overlay').classList.add('open');
-}
+    function openCart() {
+      renderCart();
+      document.getElementById('cart-overlay').classList.add('open');
+    }
 
-function closeCartOutside(e) {
-  if (e.target === document.getElementById('cart-overlay'))
-    document.getElementById('cart-overlay').classList.remove('open');
-}
+    function closeCartOutside(e) {
+      if (e.target === document.getElementById('cart-overlay'))
+        document.getElementById('cart-overlay').classList.remove('open');
+    }
 
-document.getElementById('cart-btn').addEventListener('click', openCart);
+    document.getElementById('cart-btn').addEventListener('click', openCart);
 
-function checkout() {
-  if (Object.keys(cart).length === 0) return;
-  cart = {};
-  updateCartBadge();
-  document.getElementById('cart-overlay').classList.remove('open');
-  showToast('✅ Commande confirmée ! Paiement à la livraison.');
-}
+    function checkout() {
+      if (Object.keys(cart).length === 0) return;
+      cart = {};
+      updateCartBadge();
+      document.getElementById('cart-overlay').classList.remove('open');
+      showToast('✅ Commande confirmée ! Paiement à la livraison.');
+    }
 
-function showToast(msg) {
-  const t = document.getElementById('toast');
-  t.textContent = msg;
-  t.classList.add('show');
-  setTimeout(() => t.classList.remove('show'), 2500);
-}
+    function showToast(msg) {
+      const t = document.getElementById('toast');
+      t.textContent = msg;
+      t.classList.add('show');
+      setTimeout(() => t.classList.remove('show'), 2500);
+    }
 
-function scrollTop() { window.scrollTo({top:0,behavior:'smooth'}); }
+    function scrollTop() { window.scrollTo({ top: 0, behavior: 'smooth' }); }
 
-function finishOnboarding() {
-  const name = document.getElementById('user-name').value;
-  const addr = document.getElementById('user-address').value;
-  if (!name || !addr) {
-    showToast('⚠️ Veuillez remplir tous les champs');
-    return;
-  }
-  localStorage.setItem('kleat_user', name);
-  localStorage.setItem('kleat_address', addr);
-  document.getElementById('onboarding').classList.remove('active');
-  document.getElementById('app').classList.add('visible');
-  showToast(`Bienvenue ${name} ! 👋`);
-}
-
-function openInfo() {
-  document.getElementById('info-overlay').classList.add('open');
-}
-
-function closeInfoOutside(e) {
-  if (e.target === document.getElementById('info-overlay'))
-    document.getElementById('info-overlay').classList.remove('open');
-}
-
-document.getElementById('info-btn').addEventListener('click', openInfo);
-
-// INIT
-window.addEventListener('load', () => {
-  renderFeatured();
-  renderMenu(MENU);
-  setTimeout(() => {
-    const splash = document.getElementById('splash');
-    splash.style.opacity = '0';
-    setTimeout(() => {
-      splash.style.display = 'none';
-      if (localStorage.getItem('kleat_user')) {
-        document.getElementById('app').classList.add('visible');
-      } else {
-        document.getElementById('onboarding').classList.add('active');
+    function finishOnboarding() {
+      const name = document.getElementById('user-name').value;
+      const addr = document.getElementById('user-address').value;
+      if (!name || !addr) {
+        showToast('⚠️ Veuillez remplir tous les champs');
+        return;
       }
-    }, 500);
-  }, 1800);
-});
-</script>
+      localStorage.setItem('kleat_user', name);
+      localStorage.setItem('kleat_address', addr);
+      document.getElementById('onboarding').classList.remove('active');
+      document.getElementById('app').classList.add('visible');
+      showToast(`Bienvenue ${name} ! 👋`);
+    }
+
+    function openInfo() {
+      document.getElementById('info-overlay').classList.add('open');
+    }
+
+    function closeInfoOutside(e) {
+      if (e.target === document.getElementById('info-overlay'))
+        document.getElementById('info-overlay').classList.remove('open');
+    }
+
+    document.getElementById('info-btn').addEventListener('click', openInfo);
+
+    // INIT
+    window.addEventListener('load', () => {
+      renderFeatured();
+      renderMenu(MENU);
+      setTimeout(() => {
+        const splash = document.getElementById('splash');
+        splash.style.opacity = '0';
+        setTimeout(() => {
+          splash.style.display = 'none';
+          if (localStorage.getItem('kleat_user')) {
+            document.getElementById('app').classList.add('visible');
+          } else {
+            document.getElementById('onboarding').classList.add('active');
+          }
+        }, 500);
+      }, 1800);
+    });
+  </script>
 </body>
+
 </html>
