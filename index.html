@@ -33,20 +33,6 @@ body{
   margin:0 auto;
   position:relative;
   overflow-x:hidden;
-  background:radial-gradient(circle at top left, #0A0A0A 0%, #141414 100%);
-}
-body::before {
-  content: '';
-  position: fixed;
-  top: -10%; left: -10%;
-  width: 50%; height: 50%;
-  background: radial-gradient(circle, rgba(26, 76, 46, 0.08) 0%, transparent 70%);
-  z-index: -1;
-  animation: float 15s infinite alternate ease-in-out;
-}
-@keyframes float {
-  from { transform: translate(0,0) scale(1); }
-  to { transform: translate(20%, 30%) scale(1.2); }
 }
 /* ── ONBOARDING ── */
 #onboarding{
@@ -456,10 +442,6 @@ body::before {
         <div class="hero-title">Le goût <em>authentique</em><br/>livré chez vous</div>
         <div class="hero-sub">Livraison Rapide • Paiement à la Livraison</div>
       </div>
-      <button class="hero-cta" onclick="document.getElementById('menu-section').scrollIntoView({behavior:'smooth'})">
-        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/></svg>
-        Commander maintenant
-      </button>
     </div>
   </div>
 
