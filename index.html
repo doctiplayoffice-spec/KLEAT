@@ -127,11 +127,8 @@ body{
   margin:16px 16px 0;
   border-radius:24px;overflow:hidden;
   position:relative;height:220px;
-  background:linear-gradient(135deg,#1a1200 0%,#3d2a00 40%,#1a0e00 100%);
-}
-.hero-glow{
-  position:absolute;inset:0;
-  background:radial-gradient(ellipse at 60% 40%, rgba(26,76,46,.3) 0%, transparent 65%);
+  background:var(--black2);
+  border: 1px solid rgba(26,76,46,0.1);
 }
 .hero-content{
   position:relative;z-index:2;padding:28px 24px;height:100%;
@@ -435,7 +432,6 @@ body{
 
   <!-- HERO -->
   <div class="hero">
-    <div class="hero-glow"></div>
     <div class="hero-content">
       <div class="hero-tag">🔥 &nbsp;Satisfy the Rush</div>
       <div>
