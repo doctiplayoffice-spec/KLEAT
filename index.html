@@ -49,22 +49,6 @@
       overflow-x: hidden;
     }
 
-    /* ── ONBOARDING ── */
-    #onboarding {
-      position: fixed;
-      inset: 0;
-      z-index: 998;
-      background: var(--black);
-      display: none;
-      flex-direction: column;
-      padding: 40px 24px;
-      justify-content: center;
-    }
-
-    #onboarding.active {
-      display: flex;
-    }
-
     .ob-title {
       font-size: 32px;
       font-weight: 900;
@@ -132,6 +116,8 @@
       justify-content: center;
       gap: 16px;
       transition: opacity .5s ease;
+      max-width: 430px;
+      margin: 0 auto;
     }
 
     #splash .logo-big {
@@ -759,6 +745,8 @@
       backdrop-filter: blur(4px);
       display: none;
       align-items: flex-end;
+      max-width: 430px;
+      margin: 0 auto;
     }
 
     .cart-overlay.open {
@@ -951,6 +939,8 @@
       align-items: center;
       justify-content: center;
       padding: 20px;
+      max-width: 430px;
+      margin: 0 auto;
     }
 
     .sides-modal.open {
@@ -999,20 +989,6 @@
     <div class="loader-circle"></div>
   </div>
 
-  <!-- ONBOARDING -->
-  <div id="onboarding">
-    <h1 class="ob-title">Bienvenue chez Kleat</h1>
-    <p class="ob-sub">Commençons par faire connaissance pour vos livraisons.</p>
-    <div class="ob-input-group">
-      <span class="ob-label">Votre Nom</span>
-      <input type="text" id="user-name" class="ob-input" placeholder="Ex: Ahmed Alaoui" />
-    </div>
-    <div class="ob-input-group">
-      <span class="ob-label">Adresse de livraison</span>
-      <input type="text" id="user-address" class="ob-input" placeholder="Ex: 12 Rue des Fleurs, Casablanca" />
-    </div>
-    <button class="ob-btn" onclick="finishOnboarding()">Découvrir le menu</button>
-  </div>
 
   <!-- APP -->
   <div id="app">
@@ -1446,20 +1422,6 @@
 
     function scrollTop() { window.scrollTo({ top: 0, behavior: 'smooth' }); }
 
-    function finishOnboarding() {
-      const name = document.getElementById('user-name').value;
-      const addr = document.getElementById('user-address').value;
-      if (!name || !addr) {
-        showToast('⚠️ Veuillez remplir tous les champs');
-        return;
-      }
-      localStorage.setItem('kleat_user', name);
-      localStorage.setItem('kleat_address', addr);
-      document.getElementById('onboarding').classList.remove('active');
-      document.getElementById('app').classList.add('visible');
-      showToast(`Bienvenue ${name} ! 👋`);
-    }
-
     function openInfo() {
       document.getElementById('info-overlay').classList.add('open');
     }
@@ -1480,11 +1442,7 @@
         splash.style.opacity = '0';
         setTimeout(() => {
           splash.style.display = 'none';
-          if (localStorage.getItem('kleat_user')) {
-            document.getElementById('app').classList.add('visible');
-          } else {
-            document.getElementById('onboarding').classList.add('active');
-          }
+          document.getElementById('app').classList.add('visible');
         }, 500);
       }, 1800);
     });
