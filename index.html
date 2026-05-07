@@ -1005,6 +1005,35 @@
       font-size: 14px;
       font-weight: 600;
     }
+
+    /* ── PRODUCT MODAL ── */
+    .product-hero {
+      font-size: 80px;
+      text-align: center;
+      padding: 30px;
+      background: var(--black3);
+      border-radius: 20px;
+      margin-bottom: 20px;
+    }
+    .product-title {
+      font-size: 24px;
+      font-weight: 800;
+      margin-bottom: 6px;
+    }
+    .product-cat {
+      font-size: 12px;
+      font-weight: 700;
+      color: var(--green);
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      margin-bottom: 16px;
+    }
+    .product-desc {
+      font-size: 14px;
+      color: var(--text2);
+      line-height: 1.5;
+      margin-bottom: 24px;
+    }
   </style>
 </head>
 
@@ -1208,6 +1237,14 @@
     </div>
   </div>
 
+  <!-- PRODUCT OVERLAY -->
+  <div class="cart-overlay" id="product-overlay" onclick="closeProductOutside(event)">
+    <div class="cart-sheet" id="product-sheet">
+      <div class="cart-handle"></div>
+      <div id="product-body"></div>
+    </div>
+  </div>
+
   <!-- TOAST -->
   <div class="toast" id="toast"></div>
 
@@ -1286,7 +1323,7 @@
       const featured = [MENU[4], MENU[7], MENU[10], MENU[19], MENU[31], MENU[40]];
       const el = document.getElementById('featured-scroll');
       el.innerHTML = featured.map(item => `
-    <div class="food-card-h" onclick="addToCart(${item.id})">
+    <div class="food-card-h" onclick="openProduct(${item.id})">
       <div class="card-body">
         <div class="card-cat">${item.emoji} ${item.cat}</div>
         <div class="card-name">${item.name}</div>
@@ -1308,7 +1345,7 @@
         return;
       }
       el.innerHTML = items.map(item => `
-    <div class="food-card-v" onclick="addToCart(${item.id})">
+    <div class="food-card-v" onclick="openProduct(${item.id})">
       <div class="card-body">
         <div class="card-cat">${item.emoji} ${item.cat}</div>
         <div class="card-name">${item.name}</div>
@@ -1338,6 +1375,35 @@
       if (activeCategory !== 'Tout') items = items.filter(i => i.cat === activeCategory);
       if (q) items = items.filter(i => i.name.toLowerCase().includes(q) || i.cat.toLowerCase().includes(q));
       renderMenu(items);
+    }
+
+    function openProduct(id) {
+      const item = MENU.find(m => m.id === id);
+      if (!item) return;
+      
+      const el = document.getElementById('product-body');
+      el.innerHTML = `
+        <div class="product-hero">${item.emoji}</div>
+        <div class="product-title">${item.name}</div>
+        <div class="product-cat">${item.cat}</div>
+        <div class="product-desc">Savourez notre délicieux ${item.name.toLowerCase()}, préparé avec soin à l'aide d'ingrédients frais et de qualité supérieure pour une expérience gustative inoubliable.</div>
+        <div class="cart-total" style="border-top: 1px solid var(--border-light); padding-top: 20px; margin-top: 20px;">
+          <span class="cart-total-price">${item.price} DH</span>
+          <button class="checkout-btn" style="margin-top:0; width:auto; padding: 12px 24px;" onclick="addToCartFromProduct(${item.id})">Ajouter</button>
+        </div>
+      `;
+      document.getElementById('product-overlay').classList.add('open');
+    }
+    
+    function closeProductOutside(e) {
+      if (e.target === document.getElementById('product-overlay')) {
+        document.getElementById('product-overlay').classList.remove('open');
+      }
+    }
+    
+    function addToCartFromProduct(id) {
+      document.getElementById('product-overlay').classList.remove('open');
+      addToCart(id);
     }
 
     function addToCart(id) {
