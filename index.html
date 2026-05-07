@@ -1006,33 +1006,120 @@
       font-weight: 600;
     }
 
-    /* ── PRODUCT MODAL ── */
-    .product-hero {
-      font-size: 80px;
-      text-align: center;
-      padding: 30px;
+    /* ── STANDALONE PRODUCT PAGE ── */
+    #product-page {
+      display: none;
+      min-height: 100vh;
+      background: var(--black);
+      padding-bottom: 100px;
+    }
+    .product-page-hero {
+      height: 300px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 120px;
       background: var(--black3);
-      border-radius: 20px;
-      margin-bottom: 20px;
+      border-bottom-left-radius: 40px;
+      border-bottom-right-radius: 40px;
+      margin-bottom: 24px;
+      position: relative;
     }
-    .product-title {
-      font-size: 24px;
-      font-weight: 800;
-      margin-bottom: 6px;
+    .pp-back-btn {
+      position: absolute;
+      top: 20px;
+      left: 20px;
+      width: 44px;
+      height: 44px;
+      background: var(--black3);
+      border: 1px solid var(--border-light);
+      box-shadow: var(--shadow-md);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
     }
-    .product-cat {
-      font-size: 12px;
-      font-weight: 700;
+    .pp-back-btn svg {
+      width: 24px;
+      height: 24px;
+      stroke: var(--text);
+      stroke-width: 2.5;
+      stroke-linecap: round;
+      stroke-linejoin: round;
+      fill: none;
+    }
+    .pp-body {
+      padding: 0 24px;
+    }
+    .pp-title {
+      font-size: 28px;
+      font-weight: 900;
+      margin-bottom: 8px;
+    }
+    .pp-cat {
+      display: inline-block;
+      background: rgba(26, 76, 46, .15);
       color: var(--green);
+      padding: 6px 14px;
+      border-radius: 100px;
+      font-size: 13px;
+      font-weight: 700;
       text-transform: uppercase;
       letter-spacing: 1px;
-      margin-bottom: 16px;
+      margin-bottom: 20px;
     }
-    .product-desc {
-      font-size: 14px;
+    .pp-desc {
+      font-size: 15px;
       color: var(--text2);
-      line-height: 1.5;
-      margin-bottom: 24px;
+      line-height: 1.6;
+      margin-bottom: 30px;
+    }
+    .pp-bottom {
+      position: fixed;
+      bottom: 0;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 100%;
+      max-width: 430px;
+      background: var(--bottom-nav-bg);
+      backdrop-filter: blur(20px);
+      border-top: 1px solid var(--border-light);
+      padding: 16px 24px calc(16px + env(safe-area-inset-bottom));
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      z-index: 100;
+    }
+    .pp-price-col {
+      display: flex;
+      flex-direction: column;
+    }
+    .pp-price-label {
+      font-size: 13px;
+      color: var(--text2);
+      font-weight: 600;
+      margin-bottom: 2px;
+    }
+    .pp-price {
+      font-size: 24px;
+      font-weight: 900;
+      color: var(--green);
+    }
+    .pp-add-btn {
+      background: var(--green);
+      color: var(--text);
+      border: none;
+      padding: 16px 32px;
+      border-radius: 16px;
+      font-size: 16px;
+      font-weight: 800;
+      font-family: 'Outfit', sans-serif;
+      cursor: pointer;
+      transition: transform .2s;
+    }
+    .pp-add-btn:active {
+      transform: scale(0.96);
     }
   </style>
 </head>
@@ -1237,11 +1324,25 @@
     </div>
   </div>
 
-  <!-- PRODUCT OVERLAY -->
-  <div class="cart-overlay" id="product-overlay" onclick="closeProductOutside(event)">
-    <div class="cart-sheet" id="product-sheet">
-      <div class="cart-handle"></div>
-      <div id="product-body"></div>
+  <!-- STANDALONE PRODUCT PAGE -->
+  <div id="product-page">
+    <div class="product-page-hero">
+      <button class="pp-back-btn" onclick="closeProductPage()">
+        <svg viewBox="0 0 24 24"><polyline points="15 18 9 12 15 6"></polyline></svg>
+      </button>
+      <div id="pp-emoji"></div>
+    </div>
+    <div class="pp-body">
+      <div class="pp-cat" id="pp-cat"></div>
+      <div class="pp-title" id="pp-title"></div>
+      <div class="pp-desc" id="pp-desc"></div>
+    </div>
+    <div class="pp-bottom">
+      <div class="pp-price-col">
+        <span class="pp-price-label">Prix Total</span>
+        <span class="pp-price" id="pp-price"></span>
+      </div>
+      <button class="pp-add-btn" id="pp-add-btn">Ajouter au panier</button>
     </div>
   </div>
 
@@ -1381,29 +1482,28 @@
       const item = MENU.find(m => m.id === id);
       if (!item) return;
       
-      const el = document.getElementById('product-body');
-      el.innerHTML = `
-        <div class="product-hero">${item.emoji}</div>
-        <div class="product-title">${item.name}</div>
-        <div class="product-cat">${item.cat}</div>
-        <div class="product-desc">Savourez notre délicieux ${item.name.toLowerCase()}, préparé avec soin à l'aide d'ingrédients frais et de qualité supérieure pour une expérience gustative inoubliable.</div>
-        <div class="cart-total" style="border-top: 1px solid var(--border-light); padding-top: 20px; margin-top: 20px;">
-          <span class="cart-total-price">${item.price} DH</span>
-          <button class="checkout-btn" style="margin-top:0; width:auto; padding: 12px 24px;" onclick="addToCartFromProduct(${item.id})">Ajouter</button>
-        </div>
-      `;
-      document.getElementById('product-overlay').classList.add('open');
+      document.getElementById('pp-emoji').textContent = item.emoji;
+      document.getElementById('pp-title').textContent = item.name;
+      document.getElementById('pp-cat').textContent = item.cat;
+      document.getElementById('pp-price').textContent = item.price + ' DH';
+      document.getElementById('pp-desc').textContent = `Savourez notre délicieux ${item.name.toLowerCase()}, préparé avec soin à l'aide d'ingrédients frais et de qualité supérieure pour une expérience gustative inoubliable.`;
+      
+      const addBtn = document.getElementById('pp-add-btn');
+      addBtn.onclick = () => {
+        closeProductPage();
+        addToCart(id);
+      };
+      
+      document.getElementById('app').style.display = 'none';
+      document.querySelector('.bottom-nav').style.display = 'none';
+      document.getElementById('product-page').style.display = 'block';
+      window.scrollTo(0, 0);
     }
     
-    function closeProductOutside(e) {
-      if (e.target === document.getElementById('product-overlay')) {
-        document.getElementById('product-overlay').classList.remove('open');
-      }
-    }
-    
-    function addToCartFromProduct(id) {
-      document.getElementById('product-overlay').classList.remove('open');
-      addToCart(id);
+    function closeProductPage() {
+      document.getElementById('product-page').style.display = 'none';
+      document.getElementById('app').style.display = 'block';
+      document.querySelector('.bottom-nav').style.display = 'flex';
     }
 
     function addToCart(id) {
