@@ -577,11 +577,18 @@
       overflow: hidden;
       border: 1px solid var(--border-light);
       cursor: pointer;
-      transition: transform .25s, box-shadow .25s;
+      opacity: 0;
+      transform: translateY(40px) scale(0.95);
+      transition: opacity 0.5s ease-out, transform 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.2), box-shadow 0.25s;
     }
 
-    .food-card-v:hover {
-      transform: translateY(-3px);
+    .food-card-v.in-view {
+      opacity: 1;
+      transform: translateY(0) scale(1);
+    }
+
+    .food-card-v.in-view:hover {
+      transform: translateY(-3px) scale(1);
       box-shadow: var(--shadow-md);
     }
 
@@ -1540,11 +1547,52 @@
       setupScrollSpy();
     }
 
+    function customScrollTo(targetY, duration = 600) {
+      const startY = window.scrollY;
+      const distance = targetY - startY;
+      let startTime = null;
+
+      function easeOutExpo(t) {
+        return t === 1 ? 1 : 1 - Math.pow(2, -10 * t);
+      }
+
+      function animation(currentTime) {
+        if (startTime === null) startTime = currentTime;
+        const timeElapsed = currentTime - startTime;
+        const progress = Math.min(timeElapsed / duration, 1);
+        
+        window.scrollTo(0, startY + distance * easeOutExpo(progress));
+
+        if (timeElapsed < duration) {
+          requestAnimationFrame(animation);
+        }
+      }
+      requestAnimationFrame(animation);
+    }
+
     function scrollToCat(catName) {
       const el = document.getElementById('cat-' + catName);
       if (el) {
-        el.scrollIntoView({ behavior: 'smooth' });
+        const offset = 140; 
+        const top = el.getBoundingClientRect().top + window.scrollY - offset;
+        customScrollTo(top, 800);
       }
+    }
+
+    function observeCards(container = document) {
+      const cardObserver = new IntersectionObserver(entries => {
+        entries.forEach(entry => {
+          if (entry.isIntersecting) {
+            entry.target.classList.add('in-view');
+            cardObserver.unobserve(entry.target);
+          }
+        });
+      }, { threshold: 0.1, rootMargin: '0px 0px 50px 0px' });
+      
+      container.querySelectorAll('.food-card-v').forEach((el, index) => {
+        el.style.transitionDelay = `${(index % 6) * 0.05}s`;
+        cardObserver.observe(el);
+      });
     }
 
     function setupScrollSpy() {
@@ -1563,6 +1611,7 @@
       }, { rootMargin: '-140px 0px -60% 0px' });
       
       document.querySelectorAll('.menu-group-title').forEach(el => observer.observe(el));
+      observeCards();
     }
 
     function filterMenu() { applyFilters(); }
@@ -1595,6 +1644,7 @@
             `).join('')}
           </div>
         `;
+        observeCards(container);
       } else {
         document.getElementById('cats-wrap').style.display = 'block';
         renderMenuGrouped();
