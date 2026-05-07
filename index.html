@@ -432,12 +432,31 @@
     }
 
     /* ── CATEGORIES ── */
+    .cats-wrap {
+      position: sticky;
+      top: 60px;
+      z-index: 90;
+      background: var(--black);
+      padding: 12px 0 8px;
+      margin-top: -12px;
+      margin-left: -16px;
+      margin-right: -16px;
+      border-bottom: 1px solid var(--border-light);
+    }
     .cats-scroll {
       display: flex;
       gap: 10px;
       overflow-x: auto;
       padding: 0 16px 4px;
       scrollbar-width: none;
+      scroll-behavior: smooth;
+    }
+    .menu-group-title {
+      font-size: 22px;
+      font-weight: 900;
+      padding: 32px 16px 16px;
+      margin-top: -16px;
+      scroll-margin-top: 130px;
     }
 
     .cats-scroll::-webkit-scrollbar {
@@ -1236,17 +1255,18 @@
     <div class="section-header">
       <div class="section-title">Catégories</div>
     </div>
-    <div class="cats-scroll" id="cats-scroll">
-      <div class="cat-chip active" onclick="filterCat('Tout',this)">Tout</div>
-      <div class="cat-chip" onclick="filterCat('Sandwich',this)">🥪 Sandwich</div>
-      <div class="cat-chip" onclick="filterCat('Wraps',this)">🌯 Wraps</div>
-      <div class="cat-chip" onclick="filterCat('Shawarma',this)">🥙 Shawarma</div>
-      <div class="cat-chip" onclick="filterCat('Burger',this)">🍔 Burger</div>
-      <div class="cat-chip" onclick="filterCat('Plat',this)">🍽️ Plat</div>
-      <div class="cat-chip" onclick="filterCat('Pasticcio',this)">🥘 Pasticcio</div>
-      <div class="cat-chip" onclick="filterCat('Pide',this)">🍕 Pide</div>
-      <div class="cat-chip" onclick="filterCat('Pasta',this)">🍝 Pasta</div>
-      <div class="cat-chip" onclick="filterCat('Salade',this)">🥗 Salade</div>
+    <div class="cats-wrap" id="cats-wrap">
+      <div class="cats-scroll" id="cats-scroll">
+        <div class="cat-chip active" data-cat="Sandwich" onclick="scrollToCat('Sandwich')">🥪 Sandwich</div>
+        <div class="cat-chip" data-cat="Wraps" onclick="scrollToCat('Wraps')">🌯 Wraps</div>
+        <div class="cat-chip" data-cat="Shawarma" onclick="scrollToCat('Shawarma')">🥙 Shawarma</div>
+        <div class="cat-chip" data-cat="Burger" onclick="scrollToCat('Burger')">🍔 Burger</div>
+        <div class="cat-chip" data-cat="Plat" onclick="scrollToCat('Plat')">🍽️ Plat</div>
+        <div class="cat-chip" data-cat="Pasticcio" onclick="scrollToCat('Pasticcio')">🥘 Pasticcio</div>
+        <div class="cat-chip" data-cat="Pide" onclick="scrollToCat('Pide')">🍕 Pide</div>
+        <div class="cat-chip" data-cat="Pasta" onclick="scrollToCat('Pasta')">🍝 Pasta</div>
+        <div class="cat-chip" data-cat="Salade" onclick="scrollToCat('Salade')">🥗 Salade</div>
+      </div>
     </div>
 
     <!-- FEATURED -->
@@ -1271,7 +1291,7 @@
       <div class="section-title">Notre Menu</div>
       <span id="menu-count" style="color:var(--text2);font-size:13px;"></span>
     </div>
-    <div class="menu-grid" id="menu-grid"></div>
+    <div id="menu-container"></div>
 
     <div class="spacer"></div>
   </div>
@@ -1471,45 +1491,114 @@
   `).join('');
     }
 
-    function renderMenu(items) {
-      const el = document.getElementById('menu-grid');
-      if (!el) return;
-      document.getElementById('menu-count').textContent = `${items.length} plat${items.length > 1 ? 's' : ''}`;
-      if (!items.length) {
-        el.innerHTML = `<div style="grid-column:1/-1;text-align:center;padding:40px 0;color:var(--text2);">Aucun résultat 🫤</div>`;
-        return;
-      }
-      el.innerHTML = items.map(item => `
-    <div class="food-card-v" onclick="openProduct(${item.id})">
-      <div class="card-body">
-        <div class="card-cat">${item.emoji} ${item.cat}</div>
-        <div class="card-name">${item.name}</div>
-        <div class="card-meta">
-          <div class="rating">
-             ${item.price} DH
+    const CATEGORIES_LIST = [
+      { name: 'Sandwich', emoji: '🥪' },
+      { name: 'Wraps', emoji: '🌯' },
+      { name: 'Shawarma', emoji: '🥙' },
+      { name: 'Burger', emoji: '🍔' },
+      { name: 'Plat', emoji: '🍽️' },
+      { name: 'Pasticcio', emoji: '🥘' },
+      { name: 'Pide', emoji: '🍕' },
+      { name: 'Pasta', emoji: '🍝' },
+      { name: 'Salade', emoji: '🥗' }
+    ];
+
+    function renderMenuGrouped() {
+      const container = document.getElementById('menu-container');
+      if (!container) return;
+      
+      let html = '';
+      let totalItems = 0;
+      
+      CATEGORIES_LIST.forEach(cat => {
+        const catItems = MENU.filter(i => i.cat === cat.name);
+        if (catItems.length === 0) return;
+        totalItems += catItems.length;
+        
+        html += `
+          <div class="menu-group-title" id="cat-${cat.name}">
+             ${cat.emoji} ${cat.name}
           </div>
-          <button class="card-add-sm" onclick="event.stopPropagation();addToCart(${item.id})">+</button>
-        </div>
-      </div>
-    </div>
-  `).join('');
+          <div class="menu-grid">
+            ${catItems.map(item => `
+              <div class="food-card-v" onclick="openProduct(${item.id})">
+                <div class="card-body">
+                  <div class="card-cat">${item.emoji} ${item.cat}</div>
+                  <div class="card-name">${item.name}</div>
+                  <div class="card-meta">
+                    <div class="rating">${item.price} DH</div>
+                    <button class="card-add-sm" onclick="event.stopPropagation();addToCart(${item.id})">+</button>
+                  </div>
+                </div>
+              </div>
+            `).join('')}
+          </div>
+        `;
+      });
+      container.innerHTML = html;
+      document.getElementById('menu-count').textContent = `${totalItems} plats`;
+      setupScrollSpy();
     }
 
-    function filterCat(cat, el) {
-      activeCategory = cat;
-      document.querySelectorAll('.cat-chip').forEach(c => c.classList.remove('active'));
-      el.classList.add('active');
-      applyFilters();
+    function scrollToCat(catName) {
+      const el = document.getElementById('cat-' + catName);
+      if (el) {
+        el.scrollIntoView({ behavior: 'smooth' });
+      }
+    }
+
+    function setupScrollSpy() {
+      const observer = new IntersectionObserver(entries => {
+        entries.forEach(entry => {
+          if (entry.isIntersecting) {
+            const catName = entry.target.id.replace('cat-', '');
+            document.querySelectorAll('.cat-chip').forEach(c => c.classList.remove('active'));
+            const activeChip = document.querySelector(`.cat-chip[data-cat="${catName}"]`);
+            if (activeChip) {
+              activeChip.classList.add('active');
+              activeChip.scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'center' });
+            }
+          }
+        });
+      }, { rootMargin: '-140px 0px -60% 0px' });
+      
+      document.querySelectorAll('.menu-group-title').forEach(el => observer.observe(el));
     }
 
     function filterMenu() { applyFilters(); }
 
     function applyFilters() {
       const q = document.getElementById('search-input').value.toLowerCase();
-      let items = MENU;
-      if (activeCategory !== 'Tout') items = items.filter(i => i.cat === activeCategory);
-      if (q) items = items.filter(i => i.name.toLowerCase().includes(q) || i.cat.toLowerCase().includes(q));
-      renderMenu(items);
+      const container = document.getElementById('menu-container');
+      if (q) {
+        document.getElementById('cats-wrap').style.display = 'none';
+        const items = MENU.filter(i => i.name.toLowerCase().includes(q) || i.cat.toLowerCase().includes(q));
+        if(!items.length) {
+            container.innerHTML = `<div style="text-align:center;padding:40px 0;color:var(--text2);">Aucun résultat 🫤</div>`;
+            document.getElementById('menu-count').textContent = `0 plat`;
+            return;
+        }
+        document.getElementById('menu-count').textContent = `${items.length} plats`;
+        container.innerHTML = `
+          <div class="menu-grid">
+            ${items.map(item => `
+              <div class="food-card-v" onclick="openProduct(${item.id})">
+                <div class="card-body">
+                  <div class="card-cat">${item.emoji} ${item.cat}</div>
+                  <div class="card-name">${item.name}</div>
+                  <div class="card-meta">
+                    <div class="rating">${item.price} DH</div>
+                    <button class="card-add-sm" onclick="event.stopPropagation();addToCart(${item.id})">+</button>
+                  </div>
+                </div>
+              </div>
+            `).join('')}
+          </div>
+        `;
+      } else {
+        document.getElementById('cats-wrap').style.display = 'block';
+        renderMenuGrouped();
+      }
     }
 
     function openProduct(id) {
@@ -1695,7 +1784,7 @@
         updateThemeIcon(true);
       }
       renderFeatured();
-      renderMenu(MENU);
+      applyFilters();
       setTimeout(() => {
         const splash = document.getElementById('splash');
         splash.style.opacity = '0';
